@@ -49,7 +49,7 @@ define([], function(){
         },
 
         "edit": {
-            "uri": "https://gborton-jbdbc-hw-.herokuapp.com/ixn/activities/hello-world/",
+            "uri": "https://gborton-jbdbc-hw.herokuapp.com/ixn/activities/hello-world/",
             "height": 400,
             "width": 500
         }
