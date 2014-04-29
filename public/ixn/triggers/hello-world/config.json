@@ -1,9 +1,9 @@
 {
-    "key": "gborton-jbdbc-hello-world-trigger",
+    "key": "gborton-wackytrigger",
     "lang": {
         "en-US": {
-            "name": "Hello World Custom Trigger",
-            "description": "Boot Camp Hello World Trigger"
+            "name": "wackytrigger",
+            "description": "Wacky Trigger data extension"
         }
     },
     "version": "1.0",
