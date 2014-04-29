@@ -1,27 +1,25 @@
+'use strict';
 requirejs.config({
-    paths: {
-        vendor: '../vendor',
-		postmonger: 'vendor/postmonger'
-    },
+    baseUrl: '../../../../vendor',
+    deps: [ 'jquery.min', 'underscore', 'postmonger'],
     shim: {
-        'vendor/jquery.min': {
+        'jquery.min': {
             exports: '$'
         },
-		'helloWorldTrigger': {
-			deps: ['vendor/jquery.min', 'vendor/postmonger']
-		}
+        'fuelux/all': {
+            deps: ['jquery.min', 'underscore']
+        }
     }
 });
 
-requirejs( ['vendor/jquery.min', 'helloWorldTrigger'], function( $, helloWorldTrigger ) {
-	//console.log( 'REQUIRE LOADED' );
+requirejs( ['../ixn/triggers/hello-world/js/hello-world', 'fuelux/all'], function( $, _, helloWorld ) {
+    //console.log( 'REQUIRE LOADED' );
 });
 
 requirejs.onError = function( err ) {
-	//console.log( "REQUIRE ERROR: ", err );
-	if( err.requireType === 'timeout' ) {
-		console.log( 'modules: ' + err.requireModules );
-	}
-
-	throw err;
+    //console.log( "REQUIRE ERROR: ", err );
+    if( err.requireType === 'timeout' ) {
+        console.log( 'modules: ' + err.requireModules );
+    }
+    throw err;
 };

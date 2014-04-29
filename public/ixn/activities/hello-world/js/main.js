@@ -1,19 +1,17 @@
 requirejs.config({
-    paths: {
-        vendor: '../vendor',
-		postmonger: 'vendor/postmonger'
-    },
+    baseUrl: ‘../../../../vendor’,
+    deps: [ 'jquery.min', 'underscore', 'postmonger'],
     shim: {
-        'vendor/jquery.min': {
+        'jquery.min': {
             exports: '$'
         },
-		'HelloWorld': {
-			deps: ['vendor/jquery.min', 'vendor/postmonger']
-		}
+        'fuelux/all': {
+            deps: ['jquery.min', 'underscore']
+        }
     }
 });
 
-requirejs( ['vendor/jquery.min', 'HelloWorld'], function( $, HelloWorld ) {
+requirejs( ['fuelux/all', '../ixn/activities/hello-world/js/hello-world'], function() {
 	//console.log( 'REQUIRE LOADED' );
 });
 
