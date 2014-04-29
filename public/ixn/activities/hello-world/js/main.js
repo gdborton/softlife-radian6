@@ -1,5 +1,5 @@
 requirejs.config({
-    baseUrl: ‘../../../../vendor’,
+    baseUrl: '../../../../vendor',
     deps: [ 'jquery.min', 'underscore', 'postmonger'],
     shim: {
         'jquery.min': {
