@@ -1,5 +1,5 @@
 {
-    "key": "__insert_your_custom_trigger_key_here__",
+    "key": "gborton-jbdbc-hello-world-trigger",
     "lang": {
         "en-US": {
             "name": "Hello World",
