@@ -43,7 +43,7 @@ define( function( require ) {
             };
 
             etPayload = {
-                filter: "__WILL_REPLACE_WITH_FILTER__"
+                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='003b886f-abcf-e311-9ae6-ac162db18844' isParam='false' Operator='Equal' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[1000]]></Value></Condition></ConditionSet></FilterDefinition>"
             };
 
             connection.trigger( 'save', uiPayload, etPayload );

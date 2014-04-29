@@ -41,7 +41,7 @@ define( function( require ) {
             };
 
             etPayload = {
-                filter: '<FilterDefinition Source=\'helloWorldNTO\'><ConditionSet Operator=\'AND\' ConditionSetName=\'Grouping\'><Condition ID=\'ece15cd0-8893-e311-b943-78e3b50b4f00\' isParam=\'false\' Operator=\'Equal\' conditionValid=\'1\'><Value><![CDATA[' + data.originEventStart + ']]></Value></Condition></ConditionSet></FilterDefinition>'
+                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='003b886f-abcf-e311-9ae6-ac162db18844' isParam='false' Operator='Equal' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[1000]]></Value></Condition></ConditionSet></FilterDefinition>"
             };
 
             connection.trigger( 'save', uiPayload, etPayload );
