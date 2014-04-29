@@ -166,7 +166,8 @@ app.get('/getActivityData', function( req, res ) {
 	if( !activity.logExecuteData.length ) {
 		res.send( 200, {data: null} );
 	} else {
-		res.send( 200, {data: activity.logExecuteData} );
+        res.send( 200, {data: {test: 'text'}} );
+		//res.send( 200, {data: activity.logExecuteData} );
 	}
 });
 
