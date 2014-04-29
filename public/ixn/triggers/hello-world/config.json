@@ -1,9 +1,9 @@
 {
-    "key": "gborton-test",
+    "key": "gborton-jbdbc-hello-world-trigger",
     "lang": {
         "en-US": {
-            "name": "Hello World",
-            "description": "This is a simple trigger for the Hello World demo app"
+            "name": "Hello World Custom Trigger",
+            "description": "Boot Camp Hello World Trigger"
         }
     },
     "version": "1.0",
