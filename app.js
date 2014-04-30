@@ -158,6 +158,7 @@ app.post('/fireEvent/:type', function( req, res ) {
 });
 
 app.post('/createTweet', function (req, response) {
+    console.log('Entering create tweet.');
     var radian6Host = 'https://api.radian6.com';
     var path = '/socialcloud/v1/twitter/status?async=true';
     var requestOptions = {
@@ -169,10 +170,12 @@ app.post('/createTweet', function (req, response) {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         method: 'POST',
-        body: JSON.stringify({
-            status: 'This is a test'
-        })
+        body: {
+            status: 'This+is+a+test'
+        }
     };
+
+    console.log('final url', requestOptions.url);
 
     req.pipe(request(requestOptions, function (error, innerResponse, body) {
         console.log('error -', error);
