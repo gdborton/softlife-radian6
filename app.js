@@ -170,7 +170,7 @@ app.post('/fireEvent/:type', function( req, res ) {
             }
         }.bind( this ) );*/
 
-        fuel(tempOpts, function( error, response, body ) {
+        fuelux(tempOpts, function( error, response, body ) {
             if( error ) {
                 console.error( 'ERROR: ', error );
                 res.send( response, 400, error );
