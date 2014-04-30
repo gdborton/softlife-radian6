@@ -48,7 +48,6 @@ define( function( require ) {
 	    payload.tweetContent = $('#txtTweet').val();
  
         connection.trigger('getPayload', payload);
-	    connection.trigger('updateStep', nextStep);
     });
 
 	// Journey Builder broadcasts this event to us after this module
@@ -57,8 +56,8 @@ define( function( require ) {
 	// "config.js.save.uri" as a POST
     connection.on('populateFields', function(payload) {
 
-	    payload.flowDisplayName = "Send Tweet";
-	    payload.tweetContent = "Congratulation you won a personal JetPack"
+	    payload.flowDisplayName = payload.flowDisplayName;
+	    payload.tweetContent = payload.tweetContent
 
 	    $('#txtTweet').val(payload.tweetContent);
     });
