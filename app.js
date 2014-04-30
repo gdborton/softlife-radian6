@@ -143,7 +143,7 @@ app.post('/fireEvent/:type', function( req, res ) {
 					if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
 						return callback.apply(null, arguments);
 					}
-					getJobData(options, callback);
+					setTimeout(getJobData(options, callback), 500);
 				}
 			});
 		}
