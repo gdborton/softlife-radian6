@@ -18,7 +18,7 @@ $(function() {
     // When someone submits this form, fire the event to the custom trigger
     $emailSubmit.on('click', function( evt ) {
         var altEmail    = $emailInput.val();
-        var oesVal      = $oes.val();
+        var oesVal      = $twitterHandle.val();
         var reqBody     = {
             alternativeEmail: altEmail,
             originEventStart: oesVal
@@ -26,7 +26,7 @@ $(function() {
         
         // Disable the inputs until we receive a resposne
         $emailInput.attr( 'disabled', 'disabled' );
-        $oes.attr( 'disabled', 'disabled' );
+        $twitterHandle.attr( 'disabled', 'disabled' );
         $emailSubmit.attr( 'disabled', 'disabled' );
 
         $.ajax( '/fireEvent/helloWorld', {
@@ -43,7 +43,7 @@ $(function() {
             complete: function() {
                 // Enable the inputs until we receive a resposne
                 $emailInput.removeAttr( 'disabled' );
-                $oes.removeAttr( 'disabled' );
+                $twitterHandle.removeAttr( 'disabled' );
                 $emailSubmit.removeAttr( 'disabled' );
             }
         });
