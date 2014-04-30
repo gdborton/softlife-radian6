@@ -31,21 +31,13 @@ define( function( require ) {
                 twitterFollowers: $twitterFollowers.val()
             };
 
-            /*uiPayload = {
+            uiPayload = {
                 options: data,
                 description: 'This is a hello world trigger configuration instance.'
-            };*/
-            uiPayload = {
-
             };
-
-            /*etPayload = {
-                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='268133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='GreaterThanOrEqual' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.twitterFollowers + "]]></Value></Condition></ConditionSet></FilterDefinition>"
-            };
-            */
 
             etPayload = {
-
+                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='268133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='GreaterThanOrEqual' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.twitterFollowers + "]]></Value></Condition></ConditionSet></FilterDefinition>"
             };
 
             connection.trigger( 'save', uiPayload, etPayload );
