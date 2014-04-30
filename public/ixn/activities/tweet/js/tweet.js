@@ -44,8 +44,7 @@ define( function( require ) {
         };
 
 		//TODO: Shouldn't this come from the data?
-        //payload.flowDisplayName = $('#txtTweet').val();
-
+        payload.flowDisplayName = "Send Tweet";
 	    payload.tweetContent = $('#txtTweet').val();
  
         connection.trigger('getPayload', payload);
