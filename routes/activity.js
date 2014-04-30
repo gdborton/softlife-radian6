@@ -30,7 +30,8 @@ exports.save = function( req, res ) {
  */
 exports.execute = function( req, response ) {
 	console.log(req);
-    console.log('first in argument: ' + req.body.inArguments[0]);
+    console.log('first in argument: ' + req.body.inArguments[0].Name);
+    console.log('stringify: ' + JSON.stringify(req.body.inArguments));
 	if (!req.body.tweet) {
 		response.send(400, 'The tweet param is required.');
 	}else {
