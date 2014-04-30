@@ -48,7 +48,6 @@ function tokenFromJWT( req, res, next ) {
     next();
 }
 
-
 // Radian6
 function radian6(options, callback) {
 	var radian6Host = 'https://api.radian6.com';
@@ -113,10 +112,10 @@ app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
 // Custom Hello World Activity Routes
-app.post('/ixn/activities/tweet/save/', activity.save );
-app.post('/ixn/activities/tweet/validate/', activity.validate );
-app.post('/ixn/activities/tweet/publish/', activity.publish );
-app.post('/ixn/activities/tweet/execute/', activity.execute );
+app.post('/ixn/activities/hello-world/save/', activity.save );
+app.post('/ixn/activities/hello-world/validate/', activity.validate );
+app.post('/ixn/activities/hello-world/publish/', activity.publish );
+app.post('/ixn/activities/hello-world/execute/', activity.execute );
 
 // Custom Hello World Trigger Route
 app.post('/ixn/triggers/twitter-handle/', trigger.edit );
@@ -129,27 +128,109 @@ app.post('/fireEvent/:type', function( req, res ) {
     var JB_EVENT_API = 'https://www.exacttargetapis.com/interaction-experimental/v1/events';
     var reqOpts = {};
 
+	function getTwitterFollowerCount(options, callback) {
+		function getJobData(options, callback) {
+			// If success, use job id to get the twitter user info
+			var reqOptions = {
+				path: '/socialcloud/v1/jobs/' + options.jobId
+			};
+
+			radian6(reqOptions, function (error, data) {
+				if (error) {
+					return callback(error);
+				} else {
+					// Make sure job is 'SENT'
+					if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
+						return callback.apply(null, arguments);
+					}
+					getJobData(options, callback);
+				}
+			});
+		}
+
+		// Get the async job
+		var requestOptions = {
+			path: '/socialcloud/v1/twitter/user/' + options.twitterHandle + '?async=true'
+		};
+
+		radian6(requestOptions, function(error, data) {
+			if (error) {
+				return callback(error);
+			} else if (data && data.jobRequest && data.jobRequest.jobId) {
+
+				// If success, use job id to get the twitter user info
+				getJobData({jobId: data.jobRequest.jobId}, function(error, data) {
+					if (error) {
+						return callback(error);
+					} else {
+						return callback.apply(null, arguments);
+					}
+				});
+
+			} else {
+				return callback(new Error('Could not get async job id'));
+			}
+		});
+
+	}
+
     if( 'helloWorld' !== req.params.type ) {
         res.send( 400, 'Unknown route param: "' + req.params.type +'"' );
+    } else if (data.twitterHandle){
+        // Get follower count and add that to our data
+		getTwitterFollowerCount({twitterHandle: data.twitterHandle}, function(error, twitterUserData) {
+
+			if (!error && twitterUserData && twitterUserData.jobDetails && twitterUserData.jobDetails.lastResponse && twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers) {
+				data.twitterFollowers = twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers;
+			} else {
+				data.twitterFollowers = 0;
+			}
+			var tempOpts = {
+				url: JB_EVENT_API,
+				method: 'POST',
+				body: JSON.stringify({
+					ContactKey: data.primaryEmailAddress,
+					EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
+					Data: data
+				})
+			};
+
+			fuelux(tempOpts, function( error, response, body ) {
+				if( error ) {
+					console.error( 'ERROR: ', error );
+					res.send( response, 400, error );
+				} else {
+					res.send( body, 200, response);
+				}
+			}.bind( this ));
+		});
+
+
     } else {
-        var tempOpts = {
-            url: JB_EVENT_API,
-            method: 'POST',
-            body: JSON.stringify({
-                ContactKey: data.primaryEmailAddress,
-                EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
-                Data: data
-            })
+		res.send( 400, 'Twitter handle required' );
+	}
+});
+
+app.post('/createTweet', function (req, response) {
+    if (!req.body.tweet) {
+        response.send(400, 'The tweet param is required.');
+    }else {
+        var radian6Host = 'https://api.radian6.com';
+        var path = '/socialcloud/v1/twitter/status?async=true';
+        var requestOptions = {
+            url: radian6Host + path,
+            headers: {
+                'auth_appkey': 'radian6-integration',
+                'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
+                'X-R6-SMMAccountId': '42802',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            form: {
+                status: req.body.tweet
+            }
         };
 
-        fuelux(tempOpts, function( error, response, body ) {
-            if( error ) {
-                console.error( 'ERROR: ', error );
-                res.send( response, 400, error );
-            } else {
-                res.send( body, 200, response);
-            }
-        }.bind( this ));
+        req.pipe(request.post(requestOptions)).pipe(response);
     }
 });
 
@@ -216,6 +297,7 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 						res.send( res, 400, error );
 					} else {
 						res.send( JSON.stringify(data), 200, res);
+						//res.send(data.jobDetails.lastResponse['twitter-user']['$'].followers.toString(), 200, res);
 					}
 				});
 
