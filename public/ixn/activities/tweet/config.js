@@ -18,17 +18,11 @@ define([], function(){
 			"inArguments": [
                 { Name: "%%twitterHandle%%" },
                 { Name: '{{twitterHandle}}'},
-                { name: '%twitterHandle%' },
-                { attributeName: 'twitterHandle' },
-                { attributeName: '%twitterHandle%' },
-                { attributeName: '%%twitterHandle%%' },
-                { AttributeName: 'twitterHandle' },
-                { AttributeName: '%twitterHandle%' },
-                { AttributeName: '%%twitterHandle%%' }
+                { name: '%twitterHandle%' }
             ],
 			"outArguments": [],
             "verb": "POST",
-			"body": "",
+			"body": "{ \"subject\":\"%%twitterHandle%%'s Password Reset Request\" }",
             "format": "json",
             "useJwt": false,
             "timeout": 3000
