@@ -38,13 +38,15 @@ define( function( require ) {
 
     connection.on('requestPayload', function() {
 	 var payload = {};
- 
+
         payload.options = {
            
         };
 
 		//TODO: Shouldn't this come from the data?
-        payload.flowDisplayName = 'Hello World';
+        //payload.flowDisplayName = $('#txtTweet').val();
+
+	    payload.tweetContent = $('#txtTweet').val();
  
         connection.trigger('getPayload', payload);
     });
