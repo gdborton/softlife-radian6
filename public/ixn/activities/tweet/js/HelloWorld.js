@@ -42,9 +42,11 @@ define( function( require ) {
         };
 
 		//TODO: Shouldn't this come from the data?
-        payload.flowDisplayName = 'Hello World';
- 
-        connection.trigger('getPayload', payload);
+	    payload.flowDisplayName = "Send Tweet";
+	    payload.tweetContent = $('#txtTweet').val();
+
+
+	    connection.trigger('getPayload', payload);
     });
 
 	// Journey Builder broadcasts this event to us after this module
