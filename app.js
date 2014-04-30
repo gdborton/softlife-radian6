@@ -112,10 +112,10 @@ app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
 // Custom Hello World Activity Routes
-app.post('/ixn/activities/hello-world/save/', activity.save );
-app.post('/ixn/activities/hello-world/validate/', activity.validate );
-app.post('/ixn/activities/hello-world/publish/', activity.publish );
-app.post('/ixn/activities/hello-world/execute/', activity.execute );
+app.post('/ixn/activities/tweet/save/', activity.save );
+app.post('/ixn/activities/tweet/validate/', activity.validate );
+app.post('/ixn/activities/tweet/publish/', activity.publish );
+app.post('/ixn/activities/tweet/execute/', activity.execute );
 
 // Custom Hello World Trigger Route
 app.post('/ixn/triggers/twitter-handle/', trigger.edit );
