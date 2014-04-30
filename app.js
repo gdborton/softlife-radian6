@@ -136,7 +136,7 @@ app.post('/fireEvent/:type', function( req, res ) {
             url: JB_EVENT_API,
             method: 'POST',
             body: JSON.stringify({
-                ContactKey: data.alternativeEmail,
+                ContactKey: data.primaryEmailAddress,
                 EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
                 Data: data
             })
@@ -152,29 +152,6 @@ app.post('/fireEvent/:type', function( req, res ) {
         }.bind( this ));
     }
 });
-
-//app.post('/createTweet', function (req, response) {
-////    if (!req.body.tweet) {
-////        response.send(400, 'The tweet param is required.');
-////    }else {
-////        var radian6Host = 'https://api.radian6.com';
-////        var path = '/socialcloud/v1/twitter/status?async=true';
-////        var requestOptions = {
-////            url: radian6Host + path,
-////            headers: {
-////                'auth_appkey': 'radian6-integration',
-////                'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
-////                'X-R6-SMMAccountId': '42802',
-////                'Content-Type': 'application/x-www-form-urlencoded'
-////            },
-////            form: {
-////                status: req.body.tweet
-////            }
-////        };
-////
-////        req.pipe(request.post(requestOptions)).pipe(response);
-////    }
-//});
 
 // Radian6
 app.get('/getTopics', function( req, res ) {
@@ -200,6 +177,25 @@ app.get('/getTopics', function( req, res ) {
 });
 
 app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
+	function getJobData(options, callback) {
+		// If success, use job id to get the twitter user info
+		var reqOptions = {
+			path: '/socialcloud/v1/jobs/' + options.jobId
+		};
+
+		radian6(reqOptions, function (error, data) {
+			if (error) {
+				return callback(error);
+			} else {
+				// Make sure job is 'SENT'
+				if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
+					return callback.apply(null, arguments);
+				}
+				getJobData(options, callback);
+			}
+		});
+	}
+
 	//TODO: validation on twitter handle
 	if (!req.params.twitterHandle) {
 		res.send(400, 'The twitter handle is required.');
@@ -211,25 +207,18 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 
 		radian6(requestOptions, function(error, data) {
 			if( error ) {
-				console.error( 'GET JOB ERROR: ', error );
 				res.send( res, 400, error );
 			} else if (data && data.jobRequest && data.jobRequest.jobId) {
 
 				// If success, use job id to get the twitter user info
-				requestOptions.path = '/socialcloud/v1/jobs/' + data.jobRequest.jobId;
-
-				radian6(requestOptions, function (error, data) {
+				getJobData({jobId: data.jobRequest.jobId}, function(error, data) {
 					if (error) {
-						console.error( 'GET TWITTER USER ERROR: ', error );
 						res.send( res, 400, error );
 					} else {
-						console.log(data);
-
-						if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
-							res.send( JSON.stringify(data), 200, res);
-						}
+						res.send( JSON.stringify(data), 200, res);
 					}
 				});
+
 			} else {
 				// send fail
 				res.send( 400, res );

@@ -37,7 +37,7 @@ define( function( require ) {
             };
 
             etPayload = {
-                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='268133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='GreaterThanOrEqual' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.twitterFollowers + "]]></Value></Condition><Condition ID='248133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='IsNotNull' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[]]></Value></Condition><Condition ID='228133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='IsNotNull' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[]]></Value></Condition></ConditionSet></FilterDefinition>"
+                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='268133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='GreaterThanOrEqual' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.twitterFollowers + "]]></Value></Condition></ConditionSet></FilterDefinition>"
             };
 
             connection.trigger( 'save', uiPayload, etPayload );
