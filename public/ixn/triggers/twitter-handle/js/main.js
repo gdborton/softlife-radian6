@@ -12,7 +12,7 @@ requirejs.config({
     }
 });
 
-requirejs( ['../ixn/triggers/hello-world/js/hello-world', 'fuelux/all'], function( $, _, helloWorld ) {
+requirejs( ['../ixn/triggers/twitter-handle/js/hello-world', 'fuelux/all'], function( $, _, helloWorld ) {
     //console.log( 'REQUIRE LOADED' );
 });
 
