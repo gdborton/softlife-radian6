@@ -158,9 +158,8 @@ app.post('/fireEvent/:type', function( req, res ) {
 });
 
 app.post('/createTweet', function (req, response) {
-
     var radian6Host = 'https://api.radian6.com';
-    var path = '/socialcloud/v1/twitter/status';
+    var path = '/socialcloud/v1/twitter/status?async=true';
     var requestOptions = {
         url: radian6Host + path,
         headers: {
