@@ -50,12 +50,13 @@ function tokenFromJWT( req, res, next ) {
 /**
 THIS IS A WORKAROUND FOR A KNOWN BUG, DO NOT USE THIS CODE IN PRODUCTION
 **/
+// THIS IS THE DEVIL.
 function workaround( req, res, next ) {
 	if( 'POST' !== req.method ) {
 		next();
 	}
 
-	if( '/login' === req.url || '/fireEvent/helloWorld' === req.url ) {
+	if( '/login' === req.url || '/fireEvent/helloWorld' === req.url || '/createTweet' === req.url) {
 		next();
 	}
 	
@@ -159,11 +160,8 @@ app.post('/fireEvent/:type', function( req, res ) {
 });
 
 app.post('/createTweet', function (req, res) {
-    console.log('Entering create tweet.');
 
-    res.send( 200, {data: {test: 'text'}} );
-
-    /*var radian6Host = 'https://api.radian6.com';
+    var radian6Host = 'https://api.radian6.com';
     var path = '/socialcloud/v1/twitter/status?async=true';
     var requestOptions = {
         url: radian6Host + path,
@@ -179,14 +177,11 @@ app.post('/createTweet', function (req, res) {
         }
     };
 
-    console.log('final url', requestOptions.url);
-
     req.pipe(request(requestOptions, function (error, innerResponse, body) {
         console.log('error -', error);
         console.log('response -', innerResponse);
         console.log('body -', body);
     })).pipe(res);
-    */
 });
 
 app.get('/clearList', function( req, res ) {
