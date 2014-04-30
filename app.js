@@ -48,47 +48,6 @@ function tokenFromJWT( req, res, next ) {
     next();
 }
 
-/**
-THIS IS A WORKAROUND FOR A KNOWN BUG, DO NOT USE THIS CODE IN PRODUCTION
-**/
-// THIS IS THE DEVIL.
-function workaround( req, res, next ) {
-	if( 'POST' !== req.method ) {
-		next();
-	}
-
-	if( '/login' === req.url || '/fireEvent/helloWorld' === req.url || '/createTweet' === req.url) {
-		next();
-	}
-	
-	if( 
-		'/ixn/activities/hello-world/save/'		=== req.url ||
-		'/ixn/activities/hello-world/execute/'	=== req.url ||
-		'/ixn/activities/hello-world/publish/'	=== req.url ||
-		'/ixn/activities/hello-world/validate/' === req.url
-	){
-		var buf = '';
-		req.on('data', function(chunk){
-			buf += chunk;
-		});
-
-		req.on('end', function(){
-			try{
-				var faultyJSON = /"", *}/;
-				// Cleanup Jira: JB-5249
-				if( buf.match( faultyJSON ) ) {
-					req.body = buf.replace( faultyJSON, '""}' );
-				}
-				next();
-			} catch( err ){
-				console.error( 'ERROR: ', err );
-				next( err );
-			}
-			next();
-		});
-	}
-}
-
 // Radian6
 function radian6(options, callback) {
 	var radian6Host = 'https://api.radian6.com';
@@ -134,7 +93,6 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.logger('dev'));
-app.use(workaround);
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.multipart()); // Added this while testing create tweet
@@ -218,39 +176,39 @@ app.post('/fireEvent/:type', function( req, res ) {
 
     if( 'helloWorld' !== req.params.type ) {
         res.send( 400, 'Unknown route param: "' + req.params.type +'"' );
-    } else {
+    } else if (data.twitterHandle){
         // Get follower count and add that to our data
-		if (data.twitterHandle) {
-			getTwitterFollowerCount({twitterHandle: data.twitterHandle}, function(error, twitterUserData) {
+		getTwitterFollowerCount({twitterHandle: data.twitterHandle}, function(error, twitterUserData) {
 
-				if (!error && twitterUserData && twitterUserData.jobDetails && twitterUserData.jobDetails.lastResponse && twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers) {
-					data.twitterFollowers = twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers;
+			if (!error && twitterUserData && twitterUserData.jobDetails && twitterUserData.jobDetails.lastResponse && twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers) {
+				data.twitterFollowers = twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers;
+			} else {
+				data.twitterFollowers = 0;
+			}
+			var tempOpts = {
+				url: JB_EVENT_API,
+				method: 'POST',
+				body: JSON.stringify({
+					ContactKey: data.primaryEmailAddress,
+					EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
+					Data: data
+				})
+			};
+
+			fuelux(tempOpts, function( error, response, body ) {
+				if( error ) {
+					console.error( 'ERROR: ', error );
+					res.send( response, 400, error );
 				} else {
-					data.twitterFollowers = 0;
+					res.send( body, 200, response);
 				}
-				var tempOpts = {
-					url: JB_EVENT_API,
-					method: 'POST',
-					body: JSON.stringify({
-						ContactKey: data.alternativeEmail,
-						EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
-						Data: data
-					})
-				};
+			}.bind( this ));
+		});
 
-				fuelux(tempOpts, function( error, response, body ) {
-					if( error ) {
-						console.error( 'ERROR: ', error );
-						res.send( response, 400, error );
-					} else {
-						res.send( body, 200, response);
-					}
-				}.bind( this ));
-			});
 
-		}
-
-    }
+    } else {
+		res.send( 400, 'Twitter handle required' );
+	}
 });
 
 app.post('/createTweet', function (req, response) {

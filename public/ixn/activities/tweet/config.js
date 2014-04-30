@@ -6,7 +6,7 @@ define([], function(){
         "partnerApiObjectTypeId": "IXN.CustomActivity.REST",
         "lang": {
             "en-US": {        
-                "name": "Softlife Tweeter Activity",
+                "name": "Tweet",
                 "description": "This activity sends tweets to users."
             }
         },
