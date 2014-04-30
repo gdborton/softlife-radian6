@@ -7,7 +7,7 @@ define( function( require ) {
 
     // Vars
     var connection = new Postmonger.Session();
-    var $oes = $('#originEventStart');
+    var $twitterFollowers = $('#twitter-followers');
     var data, uiPayload, etPayload;
 
     // Once we know the window is loaded
@@ -16,17 +16,11 @@ define( function( require ) {
         connection.trigger('ready');
 
         // Allow Marketers to configure the value
-        $oes.removeAttr( 'disabled' );
+        $twitterFollowers.removeAttr( 'disabled' );
     });
 
     connection.on( 'updateStep', function( step ) {
-        /*
-        console.log( 'Journey Builder sent Hello World Trigger an updateStep notice with the following data' );
-        if( step ) {
-            console.log( 'STEP: ', step );
-        }
-        */
-        var value = $oes.val();
+        var value = $twitterFollowers.val();
         if( !value ) {
             // Notify user they need to select a value 
             $('#helloWorldTriggerConfigError').html('<strong style="color: red;">You must enter something</strong>');
@@ -34,7 +28,7 @@ define( function( require ) {
             // Successful change
             // When we're all done, define our payload
             data = {
-                originEventStart: $oes.val()
+                twitterFollowers: $twitterFollowers.val()
             };
 
             uiPayload = {
@@ -43,7 +37,7 @@ define( function( require ) {
             };
 
             etPayload = {
-                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='023b886f-abcf-e311-9ae6-ac162db18844' isParam='false' Operator='Equal' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.originEventStart + "]]></Value></Condition></ConditionSet></FilterDefinition>"
+                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='268133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='GreaterThan' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.twitterFollowers + "]]></Value></Condition><Condition ID='248133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='IsNotNull' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[]]></Value></Condition><Condition ID='228133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='IsNotNull' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[]]></Value></Condition></ConditionSet></FilterDefinition>"
             };
 
             connection.trigger( 'save', uiPayload, etPayload );
@@ -57,7 +51,7 @@ define( function( require ) {
         if( options ) {
             //console.log( 'OPTIONS: ', options );
             // Persist
-            $('#originEventStart').val( options.originEventStart );
+            $('#twitter-followers').val( options.twitterFollowers );
         }
     });
 

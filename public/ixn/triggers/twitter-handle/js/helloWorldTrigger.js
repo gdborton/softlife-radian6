@@ -5,7 +5,7 @@ define( function( require ) {
 
     // Vars
     var connection = new Postmonger.Session();
-    var $oes = $('#originEventStart');
+    var $twitterFollowers = $('#twitter-followers');
     var data, uiPayload, etPayload;
 
     // Once we know the window is loaded
@@ -14,17 +14,12 @@ define( function( require ) {
         connection.trigger('ready');
 
         // Allow Marketers to configure the value
-        $oes.removeAttr( 'disabled' );
+        $twitterFollowers.removeAttr( 'disabled' );
     });
 
     connection.on( 'updateStep', function( step ) {
-        /*
-        console.log( 'Journey Builder sent Hello World Trigger an updateStep notice with the following data' );
-        if( step ) {
-            console.log( 'STEP: ', step );
-        }
-        */
-        var value = $oes.val();
+
+        var value = $twitterFollowers.val();
         if( !value ) {
             // Notify user they need to select a value 
             $('#helloWorldTriggerConfigError').html('<strong style="color: red;">You must enter something</strong>');
@@ -32,7 +27,7 @@ define( function( require ) {
             // Successful change
             // When we're all done, define our payload
             data = {
-                originEventStart: $oes.val()
+                twitterFollowers: $twitterFollowers.val()
             };
 
             uiPayload = {
@@ -41,7 +36,7 @@ define( function( require ) {
             };
 
             etPayload = {
-                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='023b886f-abcf-e311-9ae6-ac162db18844' isParam='false' Operator='Equal' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.originEventStart + "]]></Value></Condition></ConditionSet></FilterDefinition>"
+                filter: "<FilterDefinition Source='SubscriberAttribute'><ConditionSet Operator='AND' ConditionSetName='Grouping'><Condition ID='268133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='GreaterThan' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[" + data.twitterFollowers + "]]></Value></Condition><Condition ID='248133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='IsNotNull' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[]]></Value></Condition><Condition ID='228133f8-fbcf-e311-9ae6-ac162db18844' isParam='false' Operator='IsNotNull' operatorTemplate='undefined' operatorEditable='1' valueEditable='1' conditionValid='1'><Value><![CDATA[]]></Value></Condition></ConditionSet></FilterDefinition>"
             };
 
             connection.trigger( 'save', uiPayload, etPayload );
@@ -55,51 +50,7 @@ define( function( require ) {
         if( options ) {
             //console.log( 'OPTIONS: ', options );
             // Persist
-            $('#originEventStart').val( options.originEventStart );
+            $('#twitterFollowers').val( options.twitterFollowers );
         }
     });
-
-/*
-FROM: https://jbprod.exacttargetapps.com/rest/v1/contact/definition/?oauth_token=NONE&_=1392167891474
-{
-    id: "eae15cd0-8893-e311-b943-78e3b50b4f00"
-    key: "helloWorldNTO"
-    name: "helloWorldNTO"
-    -attributes: [
-        -{
-            id: "ebe15cd0-8893-e311-b943-78e3b50b4f00"
-            name: "alternativeEmail"
-            key: "alternativeEmail"
-            fieldType: 7
-            isHidden: false
-            isNullable: false
-            isReadonly: false
-            ordinal: 0
-            sourceCustomObjectFieldId: "22b22851-c11d-41d3-916b-f3d50c1fbe5b"
-        }
-        -{
-            id: "ece15cd0-8893-e311-b943-78e3b50b4f00"
-            name: "originEventStart"
-            key: "originEventStart"
-            fieldType: 11
-            isHidden: false
-            isNullable: true
-            isReadonly: false
-            ordinal: 1
-            sourceCustomObjectFieldId: "404de0d1-0578-4769-beb1-984412da3e14"
-        }
-        -{
-            id: "ede15cd0-8893-e311-b943-78e3b50b4f00"
-            name: "EventInstanceID"
-            key: "EventInstanceID"
-            fieldType: 11
-            isHidden: false
-            isNullable: false
-            isReadonly: false
-            ordinal: 2
-            sourceCustomObjectFieldId: "b0e2c2b6-a3c0-4c93-866c-0880b3e7f4d9"
-        }
-    ]
-}
-*/
 });
