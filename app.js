@@ -10,6 +10,7 @@ var request     = require('request');
 var routes      = require('./routes');
 var activity    = require('./routes/activity');
 var trigger     = require('./routes/trigger');
+var xmltojson   = require('xmljson').to_json;
 
 var app = express();
 
@@ -115,6 +116,41 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index );
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
+
+// Radian6
+app.get('/getTopics', function( req, res ) {
+	var radian6TopicsUrl = 'https://api.radian6.com/socialcloud/v1/topics/644552';
+
+	var tempOpts = {
+		url: radian6TopicsUrl,
+		method: 'GET',
+		headers: {
+			'auth_appkey': 'browser',
+			'auth_token': '0a0c02010308c36b3006d9a6f1904d64fbb661f9431769d94673d18316e995329b985c6eedd8a0284f44c2b6770bd5ad844af87a3ff8'
+		}
+	};
+	request(tempOpts, function( error, response, body ) {
+		if( error ) {
+			console.error( 'ERROR: ', error );
+			res.send( response, 400, error );
+		} else {
+			xmltojson(body, function (error, data) {
+				// Module returns a JS object
+				console.log(data);
+				// -> { prop1: 'val1', prop2: 'val2', prop3: 'val3' }
+
+				// Format as a JSON string
+				console.log(JSON.stringify(data));
+				// -> {"prop1":"val1","prop2":"val2","prop3":"val3"}
+
+				res.send( JSON.stringify(data), 200, response)
+			});
+
+			//res.send( body, 200, response);
+		}
+	});
+
+});
 
 // Custom Hello World Activity Routes
 app.post('/ixn/activities/hello-world/save/', activity.save );
