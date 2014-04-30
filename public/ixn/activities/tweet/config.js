@@ -16,11 +16,11 @@ define([], function(){
        "execute": {
             "uri": "https://softlife.herokuapp.com/ixn/activities/tweet/execute/",
 			"inArguments": [
-                { "Name": "twitterHandle", "DefaultValue": "" }
+                { Name: "twitterHandle" }
             ],
 			"outArguments": [],
             "verb": "POST",
-			"body": "%%twitterHandle%%",
+			"body": "",
             "format": "json",
             "useJwt": false,
             "timeout": 3000
