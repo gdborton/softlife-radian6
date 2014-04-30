@@ -55,7 +55,7 @@ define( function( require ) {
 	// consists of the Event Data and passes it to the
 	// "config.js.save.uri" as a POST
     connection.on('populateFields', function(payload) {
-	    
+
 	    payload.flowDisplayName = "Send Tweet";
 	    payload.tweetContent = "Congratulation you won a personal JetPack"
 
