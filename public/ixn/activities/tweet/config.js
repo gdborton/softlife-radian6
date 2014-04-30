@@ -15,7 +15,9 @@ define([], function(){
         "apiVersion": "1.0",
        "execute": {
             "uri": "https://softlife.herokuapp.com/ixn/activities/tweet/execute/",
-			"inArguments": [],
+			"inArguments": [
+                { "Name": "twitterHandle", "DefaultValue": "" }
+            ],
 			"outArguments": [],
             "verb": "POST",
 			"body": "",
