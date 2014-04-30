@@ -251,8 +251,6 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 			if (error) {
 				return callback(error);
 			} else {
-				console.log(data);
-
 				// Make sure job is 'SENT'
 				if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
 					return callback.apply(null, arguments);
@@ -273,17 +271,14 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 
 		radian6(requestOptions, function(error, data) {
 			if( error ) {
-				console.error( 'GET JOB ERROR: ', error );
 				res.send( res, 400, error );
 			} else if (data && data.jobRequest && data.jobRequest.jobId) {
 
 				// If success, use job id to get the twitter user info
 				getJobData({jobId: data.jobRequest.jobId}, function(error, data) {
 					if (error) {
-						console.error( 'GET TWITTER USER ERROR: ', error );
 						res.send( res, 400, error );
 					} else {
-						console.log(data);
 						res.send( JSON.stringify(data), 200, res);
 					}
 				});
