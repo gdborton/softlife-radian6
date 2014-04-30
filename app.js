@@ -160,7 +160,10 @@ app.post('/fireEvent/:type', function( req, res ) {
 
 app.post('/createTweet', function (req, res) {
     console.log('Entering create tweet.');
-    var radian6Host = 'https://api.radian6.com';
+
+    res.send( 200, {data: {test: 'text'}} );
+
+    /*var radian6Host = 'https://api.radian6.com';
     var path = '/socialcloud/v1/twitter/status?async=true';
     var requestOptions = {
         url: radian6Host + path,
@@ -183,6 +186,7 @@ app.post('/createTweet', function (req, res) {
         console.log('response -', innerResponse);
         console.log('body -', body);
     })).pipe(res);
+    */
 });
 
 app.get('/clearList', function( req, res ) {
