@@ -37,6 +37,7 @@ function tokenFromJWT( req, res, next ) {
     // persistent storage system and manage tokens properly with
     // node-fuel
     req.session.token = jwtData.token;
+    app.configure('token', jwtData.token);
     next();
 }
 
@@ -135,7 +136,7 @@ app.post('/fireEvent/:type', function( req, res ) {
             url: JB_EVENT_API,
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + req.session.token
+                'Authorization': 'Bearer ' + app.get('token')
             },
             body: JSON.stringify({
                 ContactKey: data.alternativeEmail,
