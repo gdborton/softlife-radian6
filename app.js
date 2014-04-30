@@ -236,7 +236,46 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 			}
 		};
 
-		req.pipe(request.get(requestOptions)).pipe(res);
+		// Get async job id
+		request.get(requestOptions, function (error, response, body) {
+			if( error ) {
+				console.error( 'GET JOB ERROR: ', error );
+				res.send( response, 400, error );
+			} else {
+				xmltojson(body, function (error, data) {
+					if ( error ) {
+						console.error( 'GET JOB JSON ERROR: ', error );
+						res.send( response, 400, error );
+					} else if (data && data.jobRequest && data.jobRequest.jobId) {
+						// If success, use job id to get the twitter user info
+						path = '/socialcloud/v1/jobs/' + data.jobRequest.jobId;
+						requestOptions.url = radian6Host + path;
+
+						request.get(requestOptions, function (error, response, body) {
+							if (error) {
+								console.error( 'GET TWITTER USER ERROR: ', error );
+								res.send( response, 400, error );
+							} else {
+								xmltojson(body, function (error, data) {
+									// TODO: Poll if not status == 'SENT'
+									console.log(data);
+
+									res.send( JSON.stringify(data), 200, response);
+								});
+							}
+						});
+
+
+					} else {
+						// send fail
+						res.send( 400, response );
+					}
+
+				});
+
+			}
+		});
+
 	}
 
 });
