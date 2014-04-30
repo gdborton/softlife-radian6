@@ -175,7 +175,11 @@ app.post('/createTweet', function (req, response) {
         })
     };
 
-    req.pipe(request(requestOptions)).pipe(res);
+    req.pipe(request(requestOptions, function (error, innerResponse, body) {
+        console.log('error -', error);
+        console.log('response -', innerResponse);
+        console.log('body -', body);
+    })).pipe(res);
 });
 
 app.get('/clearList', function( req, res ) {
