@@ -11,7 +11,7 @@ requirejs.config({
     }
 });
 
-requirejs( ['fuelux/all', '../ixn/activities/hello-world/js/hello-world'], function() {
+requirejs( ['fuelux/all', '../ixn/activities/tweet/js/tweet'], function() {
 	//console.log( 'REQUIRE LOADED' );
 });
 
