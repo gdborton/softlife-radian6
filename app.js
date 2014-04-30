@@ -120,6 +120,7 @@ app.post('/ixn/triggers/twitter-handle/', trigger.edit );
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
+    res.header("Access-Control-Allow-Origin", "*");
     var data = req.body;
     var triggerIdFromAppExtensionInAppCenter = 'softlife-twitter-trigger';
     var JB_EVENT_API = 'https://www.exacttargetapis.com/interaction-experimental/v1/events';
