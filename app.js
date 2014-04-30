@@ -127,7 +127,6 @@ app.post('/ixn/triggers/twitter-handle/', trigger.edit );
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
-    console.log('Request Data:', req);
     res.header("Access-Control-Allow-Origin", "*");
     var data = req.body;
     var triggerIdFromAppExtensionInAppCenter = 'softlife-twitter-trigger';
@@ -137,20 +136,6 @@ app.post('/fireEvent/:type', function( req, res ) {
     if( 'helloWorld' !== req.params.type ) {
         res.send( 400, 'Unknown route param: "' + req.params.type +'"' );
     } else {
-        // Hydrate the request
-        reqOpts = {
-            url: JB_EVENT_API,
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + app.get('token')
-            },
-            body: JSON.stringify({
-                ContactKey: data.alternativeEmail,
-                EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
-                Data: data
-            })
-        };
-
         var tempOpts = {
             url: JB_EVENT_API,
             method: 'POST',
@@ -160,15 +145,6 @@ app.post('/fireEvent/:type', function( req, res ) {
                 Data: data
             })
         };
-
-        /*request( reqOpts, function( error, response, body ) {
-            if( error ) {
-                console.error( 'ERROR: ', error );
-                res.send( response, 400, error );
-            } else {
-                res.send( body, 200, response);
-            }
-        }.bind( this ) );*/
 
         fuelux(tempOpts, function( error, response, body ) {
             if( error ) {
