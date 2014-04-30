@@ -157,6 +157,27 @@ app.post('/fireEvent/:type', function( req, res ) {
     }
 });
 
+app.post('/createTweet', function (req, response) {
+
+    var radian6Host = 'https://api.radian6.com';
+    var path = '/socialcloud/v1/twitter/status';
+    var requestOptions = {
+        url: radian6Host + path,
+        headers: {
+            'auth_appkey': 'radian6-integration',
+            'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
+            'X-R6-SMMAccountId': '42802',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+            status: 'This is a test'
+        })
+    };
+
+    req.pipe(request(requestOptions)).pipe(res);
+});
+
 app.get('/clearList', function( req, res ) {
 	// The client makes this request to get the data
 	activity.logExecuteData = [];
