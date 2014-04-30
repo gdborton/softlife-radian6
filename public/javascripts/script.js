@@ -7,8 +7,8 @@
 $(function() {
 
     // Cache some vars
-    var $emailInput     = $('#email');
-    var $oes            = $('#originEventStart');
+    var $emailInput     = $('#primary-email-address');
+    var $twitterHandle  = $('#twitter-handle');
     var $emailSubmit    = $('#emailSubmit');
     var $reset          = $('#reset');
     var $clear          = $('#clear');

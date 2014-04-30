@@ -116,12 +116,12 @@ app.post('/ixn/activities/hello-world/publish/', activity.publish );
 app.post('/ixn/activities/hello-world/execute/', activity.execute );
 
 // Custom Hello World Trigger Route
-app.post('/ixn/triggers/hello-world/', trigger.edit );
+app.post('/ixn/triggers/twitter-handle/', trigger.edit );
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
     var data = req.body;
-    var triggerIdFromAppExtensionInAppCenter = 'gborton-wackytrigger';
+    var triggerIdFromAppExtensionInAppCenter = 'softlife-twitter-trigger';
     var JB_EVENT_API = 'https://www.exacttargetapis.com/interaction-experimental/v1/events';
     var reqOpts = {};
 
