@@ -119,41 +119,6 @@ app.get('/', routes.index );
 app.post('/login', tokenFromJWT, routes.login );
 app.post('/logout', routes.logout );
 
-// Radian6
-app.get('/getTopics', function( req, res ) {
-	var radian6TopicsUrl = 'https://api.radian6.com/socialcloud/v1/topics/644552';
-
-	var tempOpts = {
-		url: radian6TopicsUrl,
-		method: 'GET',
-		headers: {
-			'auth_appkey': 'browser',
-			'auth_token': '0a0c02010308c36b3006d9a6f1904d64fbb661f9431769d94673d18316e995329b985c6eedd8a0284f44c2b6770bd5ad844af87a3ff8'
-		}
-	};
-	request(tempOpts, function( error, response, body ) {
-		if( error ) {
-			console.error( 'ERROR: ', error );
-			res.send( response, 400, error );
-		} else {
-			xmltojson(body, function (error, data) {
-				// Module returns a JS object
-				console.log(data);
-				// -> { prop1: 'val1', prop2: 'val2', prop3: 'val3' }
-
-				// Format as a JSON string
-				console.log(JSON.stringify(data));
-				// -> {"prop1":"val1","prop2":"val2","prop3":"val3"}
-
-				res.send( JSON.stringify(data), 200, response)
-			});
-
-			//res.send( body, 200, response);
-		}
-	});
-
-});
-
 // Custom Hello World Activity Routes
 app.post('/ixn/activities/hello-world/save/', activity.save );
 app.post('/ixn/activities/hello-world/validate/', activity.validate );
@@ -216,6 +181,64 @@ app.post('/createTweet', function (req, response) {
 
         req.pipe(request.post(requestOptions)).pipe(response);
     }
+});
+
+// Radian6
+app.get('/getTopics', function( req, res ) {
+	var radian6TopicsUrl = 'https://api.radian6.com/socialcloud/v1/topics/644552';
+
+	var tempOpts = {
+		url: radian6TopicsUrl,
+		method: 'GET',
+		headers: {
+			'auth_appkey': 'browser',
+			'auth_token': '0a0c02010308c36b3006d9a6f1904d64fbb661f9431769d94673d18316e995329b985c6eedd8a0284f44c2b6770bd5ad844af87a3ff8'
+		}
+	};
+	request(tempOpts, function( error, response, body ) {
+		if( error ) {
+			console.error( 'ERROR: ', error );
+			res.send( response, 400, error );
+		} else {
+			xmltojson(body, function (error, data) {
+				// Module returns a JS object
+				console.log(data);
+				// -> { prop1: 'val1', prop2: 'val2', prop3: 'val3' }
+
+				// Format as a JSON string
+				console.log(JSON.stringify(data));
+				// -> {"prop1":"val1","prop2":"val2","prop3":"val3"}
+
+				res.send( JSON.stringify(data), 200, response)
+			});
+
+			//res.send( body, 200, response);
+		}
+	});
+
+});
+
+app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
+	//TODO: validation on twitter handle
+	if (!req.params.twitterHandle) {
+		res.send(400, 'The twitter handle is required.');
+	}else {
+		var radian6Host = 'https://api.radian6.com';
+
+		// Get the async job
+		var path = '/socialcloud/v1/twitter/user/' + req.params.twitterHandle + '?async=true';
+		var requestOptions = {
+			url: radian6Host + path,
+			headers: {
+				'auth_appkey': 'radian6-integration',
+				'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
+				'X-R6-SMMAccountId': '42802'
+			}
+		};
+
+		req.pipe(request.get(requestOptions)).pipe(res);
+	}
+
 });
 
 app.get('/clearList', function( req, res ) {
