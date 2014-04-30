@@ -56,8 +56,8 @@ define( function( require ) {
 	// "config.js.save.uri" as a POST
     connection.on('populateFields', function(payload) {
 
-	    payload.flowDisplayName = payload.flowDisplayName;
-	    payload.tweetContent = payload.tweetContent
+	    payload.flowDisplayName = "Send Tweet";
+	    payload.tweetContent = "Congratulation you won a personal JetPack"
 
 	    $('#txtTweet').val(payload.tweetContent);
     });
