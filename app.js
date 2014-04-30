@@ -142,6 +142,8 @@ app.post('/fireEvent/:type', function( req, res ) {
 					// Make sure job is 'SENT'
 					if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
 						return callback.apply(null, arguments);
+					} else if (data && data.jobDetails && data.jobDetails.status === 'FAILED') {
+						return callback(new Error('Failed to get twitter follower'));
 					}
 					setTimeout(getJobData(options, callback), 500);
 				}
@@ -182,27 +184,28 @@ app.post('/fireEvent/:type', function( req, res ) {
 
 			if (!error && twitterUserData && twitterUserData.jobDetails && twitterUserData.jobDetails.lastResponse && twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers) {
 				data.twitterFollowers = twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers;
-			} else {
-				data.twitterFollowers = 0;
-			}
-			var tempOpts = {
-				url: JB_EVENT_API,
-				method: 'POST',
-				body: JSON.stringify({
-					ContactKey: data.primaryEmailAddress,
-					EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
-					Data: data
-				})
-			};
 
-			fuelux(tempOpts, function( error, response, body ) {
-				if( error ) {
-					console.error( 'ERROR: ', error );
-					res.send( response, 400, error );
-				} else {
-					res.send( body, 200, response);
-				}
-			}.bind( this ));
+				var tempOpts = {
+					url: JB_EVENT_API,
+					method: 'POST',
+					body: JSON.stringify({
+						ContactKey: data.primaryEmailAddress,
+						EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
+						Data: data
+					})
+				};
+
+				fuelux(tempOpts, function( error, response, body ) {
+					if( error ) {
+						console.error( 'ERROR: ', error );
+						res.send( response, 400, error );
+					} else {
+						res.send( body, 200, response);
+					}
+				}.bind( this ));
+			} else {
+				res.send( 400, error );
+			}
 		});
 
 
