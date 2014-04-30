@@ -13,6 +13,12 @@ var trigger     = require('./routes/trigger');
 
 var app = express();
 
+var fuelux = require('fuel').configure({
+    authUrl: 'https://auth.exacttargetapis.com/v1/requestToken',
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET
+});
+
 // Register configs for the environments where the app functions
 // , these can be stored in a separate file using a module like config
 var APIKeys = {
@@ -145,14 +151,33 @@ app.post('/fireEvent/:type', function( req, res ) {
             })
         };
 
-        request( reqOpts, function( error, response, body ) {
+        var tempOpts = {
+            url: JB_EVENT_API,
+            method: 'POST',
+            body: JSON.stringify({
+                ContactKey: data.alternativeEmail,
+                EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
+                Data: data
+            })
+        };
+
+        /*request( reqOpts, function( error, response, body ) {
             if( error ) {
                 console.error( 'ERROR: ', error );
                 res.send( response, 400, error );
             } else {
                 res.send( body, 200, response);
             }
-        }.bind( this ) );
+        }.bind( this ) );*/
+
+        fuel(tempOpts, function( error, response, body ) {
+            if( error ) {
+                console.error( 'ERROR: ', error );
+                res.send( response, 400, error );
+            } else {
+                res.send( body, 200, response);
+            }
+        }.bind( this ));
     }
 });
 
