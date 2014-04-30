@@ -101,6 +101,7 @@ app.use(express.logger('dev'));
 app.use(workaround);
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(express.multipart()); // Added this while testing create tweet
 app.use(express.methodOverride());
 app.use(express.favicon());
 app.use(app.router);
@@ -157,7 +158,7 @@ app.post('/fireEvent/:type', function( req, res ) {
     }
 });
 
-app.post('/createTweet', function (req, response) {
+app.post('/createTweet', function (req, res) {
     console.log('Entering create tweet.');
     var radian6Host = 'https://api.radian6.com';
     var path = '/socialcloud/v1/twitter/status?async=true';
