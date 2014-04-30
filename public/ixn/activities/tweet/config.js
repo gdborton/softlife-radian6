@@ -24,10 +24,7 @@ define([], function(){
                 { attributeName: '%%twitterHandle%%' },
                 { AttributeName: 'twitterHandle' },
                 { AttributeName: '%twitterHandle%' },
-                { AttributeName: '%%twitterHandle%%' },
-                'twitterHandle',
-                '%twitterHandle%',
-                '%%twitterHandle%%'
+                { AttributeName: '%%twitterHandle%%' }
             ],
 			"outArguments": [],
             "verb": "POST",
