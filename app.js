@@ -120,6 +120,7 @@ app.post('/ixn/triggers/twitter-handle/', trigger.edit );
 
 // Abstract Event Handler
 app.post('/fireEvent/:type', function( req, res ) {
+    console.log('Request Data:', req);
     res.header("Access-Control-Allow-Origin", "*");
     var data = req.body;
     var triggerIdFromAppExtensionInAppCenter = 'softlife-twitter-trigger';
