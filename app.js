@@ -89,6 +89,40 @@ function workaround( req, res, next ) {
 	}
 }
 
+// Radian6
+function radian6(options, callback) {
+	var radian6Host = 'https://api.radian6.com';
+	if (!options || !options.path) {
+		return callback(new Error('options.path is required'));
+	}
+
+	var requestOptions = {
+		url: radian6Host + options.path,
+		headers: {
+			'auth_appkey': 'radian6-integration',
+			'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
+			'X-R6-SMMAccountId': '42802'
+		}
+	};
+
+	if (!options.method || options.method === 'GET') {
+		request.get(requestOptions, function (error, response, body) {
+			if (error) return callback(error);
+
+			xmltojson(body, function (error, data) {
+				if (error) return callback(error);
+
+				return callback.apply(null, arguments);
+
+			});
+		});
+	} else {
+		return request(requestOptions, callback);
+	}
+
+}
+
+
 // Use the cookie-based session  middleware
 app.use(express.cookieParser());
 
@@ -188,31 +222,19 @@ app.get('/getTopics', function( req, res ) {
 	var radian6TopicsUrl = 'https://api.radian6.com/socialcloud/v1/topics/644552';
 
 	var tempOpts = {
-		url: radian6TopicsUrl,
-		method: 'GET',
-		headers: {
-			'auth_appkey': 'browser',
-			'auth_token': '0a0c02010308c36b3006d9a6f1904d64fbb661f9431769d94673d18316e995329b985c6eedd8a0284f44c2b6770bd5ad844af87a3ff8'
-		}
+		path: '/socialcloud/v1/topics/644552',
+		method: 'GET'
 	};
-	request(tempOpts, function( error, response, body ) {
+
+	radian6(tempOpts, function(error, data) {
 		if( error ) {
 			console.error( 'ERROR: ', error );
 			res.send( response, 400, error );
 		} else {
-			xmltojson(body, function (error, data) {
-				// Module returns a JS object
-				console.log(data);
-				// -> { prop1: 'val1', prop2: 'val2', prop3: 'val3' }
+			console.log(JSON.stringify(data));
 
-				// Format as a JSON string
-				console.log(JSON.stringify(data));
-				// -> {"prop1":"val1","prop2":"val2","prop3":"val3"}
+			res.send( JSON.stringify(data), 200, res);
 
-				res.send( JSON.stringify(data), 200, response)
-			});
-
-			//res.send( body, 200, response);
 		}
 	});
 
@@ -260,7 +282,10 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 									// TODO: Poll if not status == 'SENT'
 									console.log(data);
 
-									res.send( JSON.stringify(data), 200, response);
+									if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
+										res.send( JSON.stringify(data), 200, response);
+									}
+
 								});
 							}
 						});
