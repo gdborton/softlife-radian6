@@ -17,11 +17,12 @@ $(function() {
 
     // When someone submits this form, fire the event to the custom trigger
     $emailSubmit.on('click', function( evt ) {
-        var altEmail    = $emailInput.val();
-        var oesVal      = $twitterHandle.val();
+        var primaryEmailAddress    = $emailInput.val();
+        var twitterHandle      = $twitterHandle.val();
         var reqBody     = {
-            alternativeEmail: altEmail,
-            originEventStart: oesVal
+            primaryEmailAddress: primaryEmailAddress,
+            twitterHandle: twitterHandle,
+            twitterFollowers: 0
         };
         
         // Disable the inputs until we receive a resposne
