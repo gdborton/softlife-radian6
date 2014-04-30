@@ -241,6 +241,27 @@ app.get('/getTopics', function( req, res ) {
 });
 
 app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
+	function getJobData(options, callback) {
+		// If success, use job id to get the twitter user info
+		var reqOptions = {
+			path: '/socialcloud/v1/jobs/' + options.jobId
+		};
+
+		radian6(reqOptions, function (error, data) {
+			if (error) {
+				return callback(error);
+			} else {
+				console.log(data);
+
+				// Make sure job is 'SENT'
+				if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
+					return callback.apply(null, arguments);
+				}
+				getJobData(options, callback);
+			}
+		});
+	}
+
 	//TODO: validation on twitter handle
 	if (!req.params.twitterHandle) {
 		res.send(400, 'The twitter handle is required.');
@@ -257,20 +278,16 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 			} else if (data && data.jobRequest && data.jobRequest.jobId) {
 
 				// If success, use job id to get the twitter user info
-				requestOptions.path = '/socialcloud/v1/jobs/' + data.jobRequest.jobId;
-
-				radian6(requestOptions, function (error, data) {
+				getJobData({jobId: data.jobRequest.jobId}, function(error, data) {
 					if (error) {
 						console.error( 'GET TWITTER USER ERROR: ', error );
 						res.send( res, 400, error );
 					} else {
 						console.log(data);
-
-						if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
-							res.send( JSON.stringify(data), 200, res);
-						}
+						res.send( JSON.stringify(data), 200, res);
 					}
 				});
+
 			} else {
 				// send fail
 				res.send( 400, res );
