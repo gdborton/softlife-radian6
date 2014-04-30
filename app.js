@@ -245,59 +245,35 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 	if (!req.params.twitterHandle) {
 		res.send(400, 'The twitter handle is required.');
 	}else {
-		var radian6Host = 'https://api.radian6.com';
-
 		// Get the async job
-		var path = '/socialcloud/v1/twitter/user/' + req.params.twitterHandle + '?async=true';
 		var requestOptions = {
-			url: radian6Host + path,
-			headers: {
-				'auth_appkey': 'radian6-integration',
-				'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
-				'X-R6-SMMAccountId': '42802'
-			}
+			path: '/socialcloud/v1/twitter/user/' + req.params.twitterHandle + '?async=true'
 		};
 
-		// Get async job id
-		request.get(requestOptions, function (error, response, body) {
+		radian6(requestOptions, function(error, data) {
 			if( error ) {
 				console.error( 'GET JOB ERROR: ', error );
-				res.send( response, 400, error );
-			} else {
-				xmltojson(body, function (error, data) {
-					if ( error ) {
-						console.error( 'GET JOB JSON ERROR: ', error );
-						res.send( response, 400, error );
-					} else if (data && data.jobRequest && data.jobRequest.jobId) {
-						// If success, use job id to get the twitter user info
-						path = '/socialcloud/v1/jobs/' + data.jobRequest.jobId;
-						requestOptions.url = radian6Host + path;
+				res.send( res, 400, error );
+			} else if (data && data.jobRequest && data.jobRequest.jobId) {
 
-						request.get(requestOptions, function (error, response, body) {
-							if (error) {
-								console.error( 'GET TWITTER USER ERROR: ', error );
-								res.send( response, 400, error );
-							} else {
-								xmltojson(body, function (error, data) {
-									// TODO: Poll if not status == 'SENT'
-									console.log(data);
+				// If success, use job id to get the twitter user info
+				requestOptions.path = '/socialcloud/v1/jobs/' + data.jobRequest.jobId;
 
-									if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
-										res.send( JSON.stringify(data), 200, response);
-									}
-
-								});
-							}
-						});
-
-
+				radian6(requestOptions, function (error, data) {
+					if (error) {
+						console.error( 'GET TWITTER USER ERROR: ', error );
+						res.send( res, 400, error );
 					} else {
-						// send fail
-						res.send( 400, response );
+						console.log(data);
+
+						if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
+							res.send( JSON.stringify(data), 200, res);
+						}
 					}
-
 				});
-
+			} else {
+				// send fail
+				res.send( 400, res );
 			}
 		});
 
