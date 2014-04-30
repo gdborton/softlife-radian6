@@ -48,6 +48,7 @@ define( function( require ) {
 	    payload.tweetContent = $('#txtTweet').val();
  
         connection.trigger('getPayload', payload);
+	    connection.trigger('updateStep', nextStep);
     });
 
 	// Journey Builder broadcasts this event to us after this module
