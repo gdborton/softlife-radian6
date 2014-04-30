@@ -31,7 +31,7 @@ define([], function(){
             ],
 			"outArguments": [],
             "verb": "POST",
-			"body": "%%twitterHandle%%",
+			"body": "",
             "format": "json",
             "useJwt": false,
             "timeout": 3000
