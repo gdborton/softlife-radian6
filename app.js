@@ -170,27 +170,86 @@ app.post('/fireEvent/:type', function( req, res ) {
     var JB_EVENT_API = 'https://www.exacttargetapis.com/interaction-experimental/v1/events';
     var reqOpts = {};
 
+	function getTwitterFollowerCount(options, callback) {
+		function getJobData(options, callback) {
+			// If success, use job id to get the twitter user info
+			var reqOptions = {
+				path: '/socialcloud/v1/jobs/' + options.jobId
+			};
+
+			radian6(reqOptions, function (error, data) {
+				if (error) {
+					return callback(error);
+				} else {
+					// Make sure job is 'SENT'
+					if (data && data.jobDetails && data.jobDetails.status === 'SENT') {
+						return callback.apply(null, arguments);
+					}
+					getJobData(options, callback);
+				}
+			});
+		}
+
+		// Get the async job
+		var requestOptions = {
+			path: '/socialcloud/v1/twitter/user/' + options.twitterHandle + '?async=true'
+		};
+
+		radian6(requestOptions, function(error, data) {
+			if (error) {
+				return callback(error);
+			} else if (data && data.jobRequest && data.jobRequest.jobId) {
+
+				// If success, use job id to get the twitter user info
+				getJobData({jobId: data.jobRequest.jobId}, function(error, data) {
+					if (error) {
+						return callback(error);
+					} else {
+						return callback.apply(null, arguments);
+					}
+				});
+
+			} else {
+				return callback(new Error('Could not get async job id'));
+			}
+		});
+
+	}
+
     if( 'helloWorld' !== req.params.type ) {
         res.send( 400, 'Unknown route param: "' + req.params.type +'"' );
     } else {
-        var tempOpts = {
-            url: JB_EVENT_API,
-            method: 'POST',
-            body: JSON.stringify({
-                ContactKey: data.alternativeEmail,
-                EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
-                Data: data
-            })
-        };
+        // Get follower count and add that to our data
+		if (data.twitterHandle) {
+			getTwitterFollowerCount({twitterHandle: data.twitterHandle}, function(error, twitterUserData) {
 
-        fuelux(tempOpts, function( error, response, body ) {
-            if( error ) {
-                console.error( 'ERROR: ', error );
-                res.send( response, 400, error );
-            } else {
-                res.send( body, 200, response);
-            }
-        }.bind( this ));
+				if (!error && twitterUserData && twitterUserData.jobDetails && twitterUserData.jobDetails.lastResponse && twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers) {
+					data.twitterFollowers = twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers;
+				} else {
+					data.twitterFollowers = 0;
+				}
+				var tempOpts = {
+					url: JB_EVENT_API,
+					method: 'POST',
+					body: JSON.stringify({
+						ContactKey: data.alternativeEmail,
+						EventDefinitionKey: triggerIdFromAppExtensionInAppCenter,
+						Data: data
+					})
+				};
+
+				fuelux(tempOpts, function( error, response, body ) {
+					if( error ) {
+						console.error( 'ERROR: ', error );
+						res.send( response, 400, error );
+					} else {
+						res.send( body, 200, response);
+					}
+				}.bind( this ));
+			});
+
+		}
+
     }
 });
 
@@ -280,6 +339,7 @@ app.get('/getTwitterUser/:twitterHandle', function( req, res ) {
 						res.send( res, 400, error );
 					} else {
 						res.send( JSON.stringify(data), 200, res);
+						//res.send(data.jobDetails.lastResponse['twitter-user']['$'].followers.toString(), 200, res);
 					}
 				});
 
