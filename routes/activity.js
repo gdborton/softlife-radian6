@@ -168,8 +168,10 @@ exports.retrieveDEData = function(req,res) {
 					xmltojson(body, function (error, data) {
 						if (error) return callback(error);
 
-						if (data && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results.Properties.Property.Value) {
+						if (data && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results.Properties && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results.Properties.Property.Value) {
 							res.send(data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results.Properties.Property.Value, 200, res);
+						} else if (data && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"] && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"].Properties && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"].Properties.Property.Value) {
+							res.send(data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"].Properties.Property.Value, 200, res);
 						} else {
 							res.send(data, 200, res);
 						}
