@@ -76,7 +76,7 @@ define( function( require ) {
 				console.log(JSON.stringify(data));
 			    var row="";
 			    for(var i=0;i<data.length;i++) {
-				    row += "<tr><td>" +data[i].tweetContent + "<td></tr>";
+				    row += "<tr><td><b>Tweet:</b></td><td>" +data[i].tweetContent + "<td></tr>";
 			    }
 
 			    var table = "<table>"+ row +"</table>";
