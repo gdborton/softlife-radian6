@@ -1,6 +1,9 @@
 'use strict';
 
+var mongodb = require('mongodb');
+var	MongoClient = mongodb.MongoClient;
 
+var MONGOHQ_URL="mongodb://softlife:hackathon>@paulo.mongohq.com:10060/thejoy";
 
 // NOTE: Each route can render a server-side view
 // Deps

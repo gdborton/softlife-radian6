@@ -3,8 +3,7 @@
 // -------------------
 //require('newrelic');
 
-var mongodb = require('mongodb');
-var	MongoClient = mongodb.MongoClient;
+
 var express     = require('express');
 var http        = require('http');
 var JWT         = require('./lib/jwtDecoder');
@@ -15,7 +14,7 @@ var activity    = require('./routes/activity');
 var trigger     = require('./routes/trigger');
 var xmltojson   = require('xmljson').to_json;
 
-var MONGOHQ_URL="mongodb://softlife:hackathon>@paulo.mongohq.com:10060/thejoy";
+
 
 var app = express();
 
