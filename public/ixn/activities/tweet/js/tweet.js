@@ -53,14 +53,13 @@ define( function( require ) {
 		    dataType:"json",
 		    data: {"document":payload},
 		    success: function(d){
-				console.log('success '+ d);
+				console.log('success '+ JSON.stringify(d));
+			    connection.trigger('getPayload', payload);
 		    },
 		    error: function(){
 			    console.log('error');
 		    }
 	    });
- 
-        connection.trigger('getPayload', payload);
     });
 
 	// Journey Builder broadcasts this event to us after this module
