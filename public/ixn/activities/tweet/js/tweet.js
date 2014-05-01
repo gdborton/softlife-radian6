@@ -55,7 +55,7 @@ define( function( require ) {
 				dataType: "json",
 				data: {"document": payload},
 				success: function (d) {
-					console.log('success ' + JSON.stringify(d));
+
 					connection.trigger('getPayload', payload);
 				},
 				error: function () {
@@ -86,6 +86,22 @@ define( function( require ) {
 
 			    var table = '<table class="table table-bordered table-striped" style="width:494px;"><thead><tr><th>Tweet Content</th><th>Delete</th></tr></thead><tbody>'+ row +'</tbody></table>';
 			    $('#dvTweets').html(table);
+				$('#close').on('click', function(){
+				    var id = $(this).data('id');
+					$.ajax({
+						url:'https://api.mongohq.com/databases/thejoy/collections/activities/documents/'+id+'?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4',
+						type:"DELETE",
+						dataType:"json",
+						success: function(){
+						console.log('delete success');
+							$(this).parent().parent().remove();
+						},
+						error: function(){
+
+						}
+
+					});
+			    });
 		    },
 		    error: function(){
 
