@@ -46,6 +46,23 @@ define( function( require ) {
 		//TODO: Shouldn't this come from the data?
         payload.flowDisplayName = "Send Tweet";
 	    payload.tweetContent = $('#txtTweet').val();
+
+	    $.ajax({
+		    url:"https://api.mongohq.com/databases/:db/collections/:col/documents",
+		    type:"POST",
+		    dataType:"json",
+		    data: {"_apiKey":"RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
+			    "db":"softlife",
+			    "col":"activities",
+			    "document":payload
+		    },
+		    success: function(d){
+				console.log('success');
+		    },
+		    error: function(){
+			    console.log('error');
+		    }
+	    });
  
         connection.trigger('getPayload', payload);
     });
@@ -55,11 +72,24 @@ define( function( require ) {
 	// consists of the Event Data and passes it to the
 	// "config.js.save.uri" as a POST
     connection.on('populateFields', function(payload) {
+	    //mongodb://softlife:hackathon@oceanic.mongohq.com:10019/softlife
+	    $.ajax({
+		    url:"",
+		    method:"GET",
+		    success: function(data){
+			    payload.flowDisplayName = data.flowDisplayName;
+			    payload.tweetContent = data.tweetContent;
+			    $('#txtTweet').val(payload.tweetContent);
+		    },
+		    error: function(){
 
-	    payload.flowDisplayName = "Send Tweet";
-	    payload.tweetContent = "Congratulation you won a personal JetPack"
+		    }
+	    });
 
-	    $('#txtTweet').val(payload.tweetContent);
+//	    payload.flowDisplayName = "Send Tweet";
+//	    payload.tweetContent = "Congratulation you won a personal JetPack"
+
+
     });
 
 	// Trigger this method when updating a step. This allows JB to
