@@ -79,7 +79,7 @@ define( function( require ) {
 				    row += "<tr><td><b>Tweet:</b></td><td>" +data[i].tweetContent + "<td></tr>";
 			    }
 
-			    var table = '<table class="table table-bordered table-striped"><thead><tr><th>Type</th><th>Tweet Content</th></tr></thead><tbody>'+ row +'</table></tbody>;
+			    var table = '<table class="table table-bordered table-striped"><thead><tr><th>Type</th><th>Tweet Content</th></tr></thead><tbody>'+ row +'</table></tbody>';
 			    $('#dvTweets').html(table);
 		    },
 		    error: function(){
