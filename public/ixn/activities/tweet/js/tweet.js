@@ -46,7 +46,7 @@ define( function( require ) {
 
 		//TODO: Shouldn't this come from the data?
         payload.flowDisplayName = "Send Tweet";
-	    payload.tweetContent = $('#txtTweet').val();
+	    connection.trigger('getPayload', payload);
 //		if($.trim($('#txtTweet').val())) {
 //			$.ajax({
 //				url: "https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
