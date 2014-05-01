@@ -41,35 +41,35 @@ exports.execute = function( req, response ) {
 
 
 
-//	MongoClient.connect(process.env.MONGOHQ_URL, function (err, db) {
-//
-//		var collection = db.collection('activities');
-//
-//		console.log('removing documents...')
-//		collection.find({}).toArray(function (err, docs) {
-//			if (err) {
-//				return console.error(err)
-//			}
-//			docs.forEach(function (doc) {
-//				console.log('found document: ', doc)
-//			});
-//		});
-//	});
+	MongoClient.connect(process.env.MONGOHQ_URL, function (err, db) {
 
+		var collection = db.collection('activities');
 
-
-
-
-
-
-	mongoose.connect(process.env.MONGOHQ_URL);
-
-
-	activities = mongoose.model('activities', { options: { tweetContent: "string" }, flowDisplayName: "string", tweetContent: "string" });
-
-	activities.find({}, function(err, documents) {
-		return console.log(documents[0]);
+		console.log('removing documents...')
+		collection.find({}).toArray(function (err, docs) {
+			if (err) {
+				return console.error(err)
+			}
+			docs.forEach(function (doc) {
+				console.log('found document: ', doc)
+			});
+		});
 	});
+
+
+
+
+
+
+
+//	mongoose.connect(process.env.MONGOHQ_URL);
+//
+//
+//	activities = mongoose.model('activities', { options: { tweetContent: "string" }, flowDisplayName: "string", tweetContent: "string" });
+//
+//	activities.find({}, function(err, documents) {
+//		return console.log(documents[0]);
+//	});
 
 
 
