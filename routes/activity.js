@@ -60,9 +60,9 @@ exports.execute = function( req, response ) {
             var requestOptions = {
                 url: radian6Host + path,
                 headers: {
-                    'auth_appkey': 'radian6-integration',
-                    'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
-                    'X-R6-SMMAccountId': '42802',
+                    'auth_appkey': process.env.R6_APP_KEY,
+                    'auth_token': process.env.R6_AUTH_TOKEN,
+                    'X-R6-SMMAccountId': process.env.R6_ACCOUNT_ID,
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 form: {

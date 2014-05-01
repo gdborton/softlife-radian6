@@ -26,8 +26,8 @@ var fuelux = require('fuel').configure({
 
 var Radian6Config = {
 	token: process.env.R6_AUTH_TOKEN,
-	appKey: 'radian6-integration',
-	accountId:'42802'
+	appKey: process.env.R6_APP_KEY,
+	accountId: process.env.R6_ACCOUNT_ID
 }
 
 // Register configs for the environments where the app functions
