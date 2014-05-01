@@ -40,13 +40,14 @@ define( function( require ) {
 	 var payload = {};
 
         payload.options = {
-	       tweetContent : $('#txtTweet').val(),
+	       tweetContent : $('#txtTweet').val()
 //	       tweetContent2 : $('#txtTweet2').val(),
 //	       tweetContent3 : $('#txtTweet3').val()
         };
 
 		//TODO: Shouldn't this come from the data?
         payload.flowDisplayName = "Send Tweet";
+	    payload.tweetContent = $('#txtTweet').val();
 	    //connection.trigger('getPayload', payload);
 		if($.trim($('#txtTweet').val())) {
 			$.ajax({
