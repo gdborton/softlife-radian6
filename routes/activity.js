@@ -1,5 +1,7 @@
 'use strict';
 
+var MONGOHQ_URL="mongodb://softlife:hackathon>@paulo.mongohq.com:10060/thejoy";
+
 // NOTE: Each route can render a server-side view
 // Deps
 
@@ -29,7 +31,29 @@ exports.save = function( req, res ) {
  * POST Handler for /execute/ route of Activity.
  */
 exports.execute = function( req, response ) {
-    console.log(req);
+
+
+	var mongodb = require('mongodb')
+		, MongoClient = mongodb.MongoClient
+	MongoClient.connect(process.env.MONGOHQ_URL, function (err, db) {
+
+		var collection = db.collection('activities');
+
+		console.log('removing documents...')
+		collection.find({}).toArray(function (err, docs) {
+			if (err) {
+				return console.error(err)
+			}
+			docs.forEach(function (doc) {
+				console.log('found document: ', doc)
+			});
+		});
+	});
+
+
+
+
+	console.log(req);
     console.log('stringifyBody: ' + JSON.stringify(req.body));
 
 	if (!req.body.tweet) {
