@@ -76,10 +76,10 @@ define( function( require ) {
 				console.log(JSON.stringify(data));
 			    var row="";
 			    for(var i=0;i<data.length;i++) {
-				    row += "<tr><td><b>Tweet:</b></td><td>" +data[i].tweetContent + "<td></tr>";
+				    row += "<tr><td>" +data[i].tweetContent + "<td></tr>";
 			    }
 
-			    var table = '<table class="table table-bordered table-striped"><thead><tr><th>Type</th><th>Tweet Content</th></tr></thead><tbody>'+ row +'</table></tbody>';
+			    var table = '<table class="table table-bordered table-striped"><thead><tr><th>Tweet Content</th></tr></thead><tbody>'+ row +'</tbody></table>';
 			    $('#dvTweets').html(table);
 		    },
 		    error: function(){
