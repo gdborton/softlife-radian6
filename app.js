@@ -161,7 +161,7 @@ app.post('/fireEvent/:type', function( req, res ) {
 					}
                     retries = retries - 1;
                     console.log('decrementing retry', retries);
-					setTimeout(getJobData(options, callback), 500);
+					setTimeout(function(){ getJobData(options, callback)}, 1000);
 				}
 			});
 		}
