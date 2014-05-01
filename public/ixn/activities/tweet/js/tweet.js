@@ -46,21 +46,23 @@ define( function( require ) {
 		//TODO: Shouldn't this come from the data?
         payload.flowDisplayName = "Send Tweet";
 	    payload.tweetContent = $('#txtTweet').val();
-	if($.trim($('#txtTweet').val())) {
-		$.ajax({
-			url: "https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
-			type: "POST",
-			dataType: "json",
-			data: {"document": payload},
-			success: function (d) {
-				console.log('success ' + JSON.stringify(d));
-				connection.trigger('getPayload', payload);
-			},
-			error: function () {
-				console.log('error');
-			}
-		});
-	}
+		if($.trim($('#txtTweet').val())) {
+			$.ajax({
+				url: "https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
+				type: "POST",
+				dataType: "json",
+				data: {"document": payload},
+				success: function (d) {
+					console.log('success ' + JSON.stringify(d));
+					connection.trigger('getPayload', payload);
+				},
+				error: function () {
+					console.log('error');
+				}
+			});
+		} else {
+			connection.trigger('getPayload', payload);
+		}
     });
 
 	// Journey Builder broadcasts this event to us after this module
@@ -77,10 +79,10 @@ define( function( require ) {
 				console.log(JSON.stringify(data));
 			    var row="";
 			    for(var i=0;i<data.length;i++) {
-				    row += "<tr><td>" +data[i].tweetContent + "</td></tr>";
+				    row += ''<tr><td>' +data[i].tweetContent + '</td><td><button class="close" data-id="'+data[i]._id+'">&times;</button></td></tr>';
 			    }
 
-			    var table = '<table class="table table-bordered table-striped"><thead><tr><th>Tweet Content</th></tr></thead><tbody>'+ row +'</tbody></table>';
+			    var table = '<table class="table table-bordered table-striped" style="width:494px;"><thead><tr><th>Tweet Content</th><th>Delete</th></tr></thead><tbody>'+ row +'</tbody></table>';
 			    $('#dvTweets').html(table);
 		    },
 		    error: function(){
