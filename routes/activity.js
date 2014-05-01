@@ -29,9 +29,9 @@ exports.save = function( req, res ) {
  * POST Handler for /execute/ route of Activity.
  */
 exports.execute = function( req, response ) {
-	console.log(req);
-    console.log('first in argument: ' + req.body.inArguments[0].Name);
-    console.log('stringify: ' + JSON.stringify(req.body.inArguments));
+    console.log(req);
+    console.log('stringifyBody: ' + JSON.stringify(req.body));
+
 	if (!req.body.tweet) {
 		response.send(400, 'The tweet param is required.');
 	}else {

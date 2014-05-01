@@ -20,6 +20,12 @@ var fuelux = require('fuel').configure({
     clientSecret: process.env.CLIENT_SECRET
 });
 
+var Radian6Config = {
+	token: process.env.R6_AUTH_TOKEN,
+	appKey: 'radian6-integration',
+	accountId:'42802'
+}
+
 // Register configs for the environments where the app functions
 // , these can be stored in a separate file using a module like config
 var APIKeys = {
@@ -58,9 +64,9 @@ function radian6(options, callback) {
 	var requestOptions = {
 		url: radian6Host + options.path,
 		headers: {
-			'auth_appkey': 'radian6-integration',
-			'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
-			'X-R6-SMMAccountId': '42802'
+			'auth_appkey': Radian6Config.appKey,
+			'auth_token': Radian6Config.token,
+			'X-R6-SMMAccountId': Radian6Config.accountId
 		}
 	};
 
@@ -223,9 +229,9 @@ app.post('/createTweet', function (req, response) {
         var requestOptions = {
             url: radian6Host + path,
             headers: {
-                'auth_appkey': 'radian6-integration',
-                'auth_token': '0a0c0201030887702d7344d5eeda3bff5a1a1e86844c9ac2c418db92b996dabaad221de16c739914322db675ec53c530c326b08b884e',
-                'X-R6-SMMAccountId': '42802',
+				'auth_appkey': Radian6Config.appKey,
+				'auth_token': Radian6Config.token,
+				'X-R6-SMMAccountId': Radian6Config.accountId,
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             form: {
