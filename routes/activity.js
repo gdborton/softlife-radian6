@@ -40,13 +40,12 @@ exports.save = function( req, res ) {
  */
 exports.execute = function( req, response ) {
 
-
+    var primaryEmailAddress = req.body.keyValue;
 
 	MongoClient.connect(MONGOHQ_URL, function (err, db) {
 
 		var collection = db.collection('activities');
 
-		console.log('removing documents...')
 		collection.find({}).toArray(function (err, docs) {
 			if (err) {
 				return console.error(err)
@@ -55,23 +54,27 @@ exports.execute = function( req, response ) {
             var selectedIndex = Math.round(Math.random() * (docs.length - 0));
             var tweet = docs[selectedIndex].tweetContent;
 
-            var radian6Host = 'https://api.radian6.com';
-            var path = '/socialcloud/v1/twitter/status?async=true';
-            var requestOptions = {
-                url: radian6Host + path,
-                headers: {
-                    'auth_appkey': process.env.R6_APP_KEY,
-                    'auth_token': process.env.R6_AUTH_TOKEN,
-                    'X-R6-SMMAccountId': process.env.R6_ACCOUNT_ID,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                form: {
-                    status: tweet
-                }
-            };
 
-            req.pipe(request.post(requestOptions)).pipe(response);
+            retrieveDEData(primaryEmailAddress, function (twitterHandle) {
+                tweet = tweet.replace(/{{twitterHandle}}/g, twitterHandle);
 
+                var radian6Host = 'https://api.radian6.com';
+                var path = '/socialcloud/v1/twitter/status?async=true';
+                var requestOptions = {
+                    url: radian6Host + path,
+                    headers: {
+                        'auth_appkey': process.env.R6_APP_KEY,
+                        'auth_token': process.env.R6_AUTH_TOKEN,
+                        'X-R6-SMMAccountId': process.env.R6_ACCOUNT_ID,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    form: {
+                        status: tweet
+                    }
+                };
+
+                req.pipe(request.post(requestOptions)).pipe(response);
+            });
 		});
 	});
 
@@ -83,9 +86,6 @@ exports.execute = function( req, response ) {
  * POST Handler for /publish/ route of Activity.
  */
 exports.publish = function( req, res ) {
-    // Data from the req and put it in an array accessible to the main app.
-    //console.log( req.body );
-   // exports.logExecuteData.push( req );
     res.send( 200, 'Publish' );
 };
 
@@ -93,16 +93,11 @@ exports.publish = function( req, res ) {
  * POST Handler for /validate/ route of Activity.
  */
 exports.validate = function( req, res ) {
-    // Data from the req and put it in an array accessible to the main app.
-    //console.log( req.body );
-   // exports.logExecuteData.push( req );
     res.send( 200, 'Validate' );
 };
 
 
-exports.retrieveDEData = function(req,res) {
-	var contactKey = req.params.email;
-
+function retrieveDEData (contactKey, callback) {
 	var authReqOpt = {
 		url: 'https://auth.exacttargetapis.com/v1/requestToken?legacy=1',
 		headers: {
@@ -118,7 +113,7 @@ exports.retrieveDEData = function(req,res) {
 	request.post(authReqOpt, function(error, response, body) {
 		if( error ) {
 			console.log('error auth');
-			res.send( res, 400, error );
+			callback(error);
 		} else {
 
 			var envelope = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
@@ -159,24 +154,20 @@ exports.retrieveDEData = function(req,res) {
 
 			request.post(requestOptions, function(error, response, body) {
 				if( error ) {
-					res.send( res, 400, error );
+					callback(error);
 				} else {
 
 					xmltojson(body, function (error, data) {
-						if (error) return callback(error);
-
 						if (data && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results.Properties && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results.Properties.Property.Value) {
-							res.send(data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results.Properties.Property.Value, 200, res);
+							callback(data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results.Properties.Property.Value);
 						} else if (data && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"] && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"].Properties && data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"].Properties.Property.Value) {
-							res.send(data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"].Properties.Property.Value, 200, res);
+                            callback(data["soap:Envelope"]["soap:Body"].RetrieveResponseMsg.Results["0"].Properties.Property.Value);
 						} else {
-							res.send(data, 200, res);
+							callback(data);
 						}
-
 					});
 				}
 			});
 		}
 	});
-
 };
