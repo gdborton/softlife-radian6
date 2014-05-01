@@ -70,15 +70,16 @@ define( function( require ) {
 	    //mongodb://softlife:hackathon@oceanic.mongohq.com:10019/softlife
 	    $.ajax({
 		    url:"https://api.mongohq.com/databases/thejoy/collections/acivities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
+		    dataType:"json",
 		    type:"GET",
 		    success: function(data){
-
+				console.log(JSON.stringify(data));
 			    var row="";
 			    for(var i=0;i<data.length;i++) {
 				    row += "<tr><td>" +data[i].tweetContent + "<td></tr>";
 			    }
 
-			    var table = "<table>"+ row +"<table>";
+			    var table = "<table>"+ row +"</table>";
 			    $('#dvTweets').html(table);
 
 		    },
