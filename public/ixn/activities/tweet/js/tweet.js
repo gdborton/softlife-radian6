@@ -40,8 +40,9 @@ define( function( require ) {
 	 var payload = {};
 
         payload.options = {
-	       tweetContent : $('#txtTweet').val()
-           
+	       tweetContent1 : $('#txtTweet1').val(),
+	       tweetContent2 : $('#txtTweet2').val(),
+	       tweetContent3 : $('#txtTweet3').val()
         };
 
 		//TODO: Shouldn't this come from the data?
@@ -91,7 +92,9 @@ define( function( require ) {
 //		    }
 //	    });
 
-	    $('#txtTweet').val(options.tweetContent);
+	    $('#txtTweet1').val(options.tweetContent1);
+	    $('#txtTweet2').val(options.tweetContent2);
+	    $('#txtTweet3').val(options.tweetContent3);
 
 //	    payload.flowDisplayName = "Send Tweet";
 //	    payload.tweetContent = "Congratulation you won a personal JetPack"
