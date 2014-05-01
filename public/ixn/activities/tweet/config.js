@@ -16,10 +16,9 @@ define([], function(){
        "execute": {
             "uri": "https://softlife.herokuapp.com/ixn/activities/tweet/execute/",
 			"inArguments": [
-                { Name: "%%twitterHandle%%", "DefaultValue": "1" },
-                { Name: '{{twitterHandle}}', "DefaultValue": "1"},
-                { name: '%twitterHandle%', "DefaultValue": "1" },
-                { twitterHandle: "" }
+                { ArgumentName: "twitterHandle", "DefaultValue": "1 twitterHandle %%twitterHandle%% %twitterHandle%"},
+                { ArgumentName: '%twitterHandle%', "DefaultValue": "2 twitterHandle %twitterHandle% %%twitterHandle%%" },
+                { ArgumentName: '%%twitterHandle%%', "DefaultValue": "3 twitterHandle %twitterHandle% %%twitterHandle%%" }
             ],
 			"outArguments": [],
             "verb": "POST",
