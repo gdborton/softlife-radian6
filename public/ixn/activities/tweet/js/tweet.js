@@ -40,13 +40,14 @@ define( function( require ) {
 	 var payload = {};
 
         payload.options = {
-	       tweetContent : $('#txtTweet').val(),
+	       tweetContent : $('#txtTweet').val()
 //	       tweetContent2 : $('#txtTweet2').val(),
 //	       tweetContent3 : $('#txtTweet3').val()
         };
 
 		//TODO: Shouldn't this come from the data?
         payload.flowDisplayName = "Send Tweet";
+	    payload.tweetContent = $('#txtTweet').val();
 	    //connection.trigger('getPayload', payload);
 		if($.trim($('#txtTweet').val())) {
 			$.ajax({
@@ -55,7 +56,7 @@ define( function( require ) {
 				dataType: "json",
 				data: {"document": payload},
 				success: function (d) {
-					console.log('success ' + JSON.stringify(d));
+
 					connection.trigger('getPayload', payload);
 				},
 				error: function () {
@@ -86,6 +87,24 @@ define( function( require ) {
 
 			    var table = '<table class="table table-bordered table-striped" style="width:494px;"><thead><tr><th>Tweet Content</th><th>Delete</th></tr></thead><tbody>'+ row +'</tbody></table>';
 			    $('#dvTweets').html(table);
+				$('.close').on('click', function(e){
+					var self = $(this);
+					e.preventDefault();
+				    var id = $(this).data('id');
+					$.ajax({
+						url:'https://api.mongohq.com/databases/thejoy/collections/activities/documents/'+id+'?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4',
+						type:"DELETE",
+						dataType:"json",
+						success: function(){
+						console.log('delete success');
+							self.parent().parent().remove();
+						},
+						error: function(){
+
+						}
+
+					});
+			    });
 		    },
 		    error: function(){
 
