@@ -127,6 +127,8 @@ app.post('/ixn/activities/tweet/validate/', activity.validate );
 app.post('/ixn/activities/tweet/publish/', activity.publish );
 app.post('/ixn/activities/tweet/execute/', activity.execute );
 
+app.get('/ixn/activities/retrieveDEData/:email', activity.retrieveDEData );
+
 // Custom Hello World Trigger Route
 app.post('/ixn/triggers/twitter-handle/', trigger.edit );
 
