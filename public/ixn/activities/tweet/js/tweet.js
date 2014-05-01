@@ -79,7 +79,7 @@ define( function( require ) {
 				console.log(JSON.stringify(data));
 			    var row="";
 			    for(var i=0;i<data.length;i++) {
-				    row += '<tr><td>' +data[i].tweetContent + '</td><td><button class="close" data-id="'+data[i]._id+'">&times;</button></td></tr>';
+				    row += '<tr><td>' +data[i].tweetContent + '</td><td><button class="close" data-id="'+data[i]._id.$oid+'">&times;</button></td></tr>';
 			    }
 
 			    var table = '<table class="table table-bordered table-striped" style="width:494px;"><thead><tr><th>Tweet Content</th><th>Delete</th></tr></thead><tbody>'+ row +'</tbody></table>';
