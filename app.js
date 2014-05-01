@@ -140,7 +140,8 @@ app.post('/fireEvent/:type', function( req, res ) {
 
 	function getTwitterFollowerCount(options, callback) {
 		var retries = 10;
-		function getJobData(options, callback) {
+
+        function getJobData(options, callback) {
 			// If success, use job id to get the twitter user info
 			var reqOptions = {
 				path: '/socialcloud/v1/jobs/' + options.jobId
@@ -155,9 +156,10 @@ app.post('/fireEvent/:type', function( req, res ) {
 						return callback.apply(null, arguments);
 					} else if (data && data.jobDetails && data.jobDetails.status === 'FAILED') {
 						return callback(new Error('Failed to get twitter follower'));
-					} else if (retries -= 1 < 0) {
+					} else if (retries <= 0) {
 						return callback(new Error('No more trying to get twitter follower'));
 					}
+                    retries = retries - 1;
 					setTimeout(getJobData(options, callback), 500);
 				}
 			});
