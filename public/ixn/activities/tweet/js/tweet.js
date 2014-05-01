@@ -86,7 +86,7 @@ define( function( require ) {
 
 			    var table = '<table class="table table-bordered table-striped" style="width:494px;"><thead><tr><th>Tweet Content</th><th>Delete</th></tr></thead><tbody>'+ row +'</tbody></table>';
 			    $('#dvTweets').html(table);
-				$('#close').on('click', function(e){
+				$('.close').on('click', function(e){
 					e.preventDefault();
 				    var id = $(this).data('id');
 					$.ajax({
