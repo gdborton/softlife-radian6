@@ -3,6 +3,10 @@
 var mongodb = require('mongodb');
 var	MongoClient = mongodb.MongoClient;
 
+var activities, mongoose, _;
+mongoose = require("mongoose");
+
+
 var MONGOHQ_URL="mongodb://softlife:hackathon>@paulo.mongohq.com:10060/thejoy";
 
 // NOTE: Each route can render a server-side view
@@ -38,19 +42,34 @@ exports.execute = function( req, response ) {
 
 
 
-	MongoClient.connect(process.env.MONGOHQ_URL, function (err, db) {
+//	MongoClient.connect(process.env.MONGOHQ_URL, function (err, db) {
+//
+//		var collection = db.collection('activities');
+//
+//		console.log('removing documents...')
+//		collection.find({}).toArray(function (err, docs) {
+//			if (err) {
+//				return console.error(err)
+//			}
+//			docs.forEach(function (doc) {
+//				console.log('found document: ', doc)
+//			});
+//		});
+//	});
 
-		var collection = db.collection('activities');
 
-		console.log('removing documents...')
-		collection.find({}).toArray(function (err, docs) {
-			if (err) {
-				return console.error(err)
-			}
-			docs.forEach(function (doc) {
-				console.log('found document: ', doc)
-			});
-		});
+
+
+
+
+
+	mongoose.connect(process.env.MONGOHQ_URL);
+
+
+	activities = mongoose.model('activities', { options: { tweetContent: "string" }, flowDisplayName: "string", tweetContent: "string" });
+
+	activities.find({}, function(err, documents) {
+		return console.log(documents[0]);
 	});
 
 	if (!req.body.tweet) {
