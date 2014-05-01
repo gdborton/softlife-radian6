@@ -1,6 +1,6 @@
 'use strict';
 
-var MONGOHQ_URL="mongodb://softlife:hackathon>@paulo.mongohq.com:10060/thejoy";
+
 
 // NOTE: Each route can render a server-side view
 // Deps
@@ -33,8 +33,7 @@ exports.save = function( req, res ) {
 exports.execute = function( req, response ) {
 
 
-	var mongodb = require('mongodb')
-		, MongoClient = mongodb.MongoClient
+
 	MongoClient.connect(process.env.MONGOHQ_URL, function (err, db) {
 
 		var collection = db.collection('activities');
