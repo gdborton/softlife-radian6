@@ -48,23 +48,18 @@ define( function( require ) {
 	    payload.tweetContent = $('#txtTweet').val();
 
 	    $.ajax({
-		    url:"https://api.mongohq.com/databases/:db/collections/:col/documents",
+		    url:"https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
 		    type:"POST",
 		    dataType:"json",
-		    data: {"_apiKey":"RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
-			    "db":"softlife",
-			    "col":"activities",
-			    "document":payload
-		    },
+		    data: {"document":payload},
 		    success: function(d){
-				console.log('success');
+				console.log('success '+ JSON.stringify(d));
+			    connection.trigger('getPayload', payload);
 		    },
 		    error: function(){
 			    console.log('error');
 		    }
 	    });
- 
-        connection.trigger('getPayload', payload);
     });
 
 	// Journey Builder broadcasts this event to us after this module
@@ -74,12 +69,19 @@ define( function( require ) {
     connection.on('populateFields', function(payload) {
 	    //mongodb://softlife:hackathon@oceanic.mongohq.com:10019/softlife
 	    $.ajax({
-		    url:"",
-		    method:"GET",
+		    url:"https://api.mongohq.com/databases/thejoy/collections/acivities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
+		    dataType:"json",
+		    type:"GET",
 		    success: function(data){
-			    payload.flowDisplayName = data.flowDisplayName;
-			    payload.tweetContent = data.tweetContent;
-			    $('#txtTweet').val(payload.tweetContent);
+				console.log(JSON.stringify(data));
+			    var row="";
+			    for(var i=0;i<data.length;i++) {
+				    row += "<tr><td>" +data[i].tweetContent + "<td></tr>";
+			    }
+
+			    var table = "<table>"+ row +"</table>";
+			    $('#dvTweets').html(table);
+
 		    },
 		    error: function(){
 
