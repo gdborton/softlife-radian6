@@ -48,14 +48,10 @@ define( function( require ) {
 	    payload.tweetContent = $('#txtTweet').val();
 
 	    $.ajax({
-		    url:"https://api.mongohq.com/databases/:db/collections/:col/documents",
+		    url:"https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
 		    type:"POST",
 		    dataType:"json",
-		    data: {"_apiKey":"RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
-			    "db":"softlife",
-			    "col":"activities",
-			    "document":payload
-		    },
+		    data: {"document":payload},
 		    success: function(d){
 				console.log('success');
 		    },
