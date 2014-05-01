@@ -160,6 +160,7 @@ app.post('/fireEvent/:type', function( req, res ) {
 						return callback(new Error('No more trying to get twitter follower'));
 					}
                     retries = retries - 1;
+                    console.log('decrementing retry', retries);
 					setTimeout(getJobData(options, callback), 500);
 				}
 			});
