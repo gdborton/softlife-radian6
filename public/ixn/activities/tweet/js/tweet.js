@@ -40,53 +40,58 @@ define( function( require ) {
 	 var payload = {};
 
         payload.options = {
+	       tweetContent : $('#txtTweet').val()
            
         };
 
 		//TODO: Shouldn't this come from the data?
         payload.flowDisplayName = "Send Tweet";
-	    payload.tweetContent = $('#txtTweet').val();
-
-	    $.ajax({
-		    url:"https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
-		    type:"POST",
-		    dataType:"json",
-		    data: {"document":payload},
-		    success: function(d){
-				console.log('success '+ JSON.stringify(d));
-			    connection.trigger('getPayload', payload);
-		    },
-		    error: function(){
-			    console.log('error');
-		    }
-	    });
+	    connection.trigger('getPayload', payload);
+//		if($.trim($('#txtTweet').val())) {
+//			$.ajax({
+//				url: "https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
+//				type: "POST",
+//				dataType: "json",
+//				data: {"document": payload},
+//				success: function (d) {
+//					console.log('success ' + JSON.stringify(d));
+//					connection.trigger('getPayload', payload);
+//				},
+//				error: function () {
+//					console.log('error');
+//				}
+//			});
+//		} else {
+//			connection.trigger('getPayload', payload);
+//		}
     });
 
 	// Journey Builder broadcasts this event to us after this module
 	// sends the "ready" method. JB parses the serialized object which
 	// consists of the Event Data and passes it to the
 	// "config.js.save.uri" as a POST
-    connection.on('populateFields', function(payload) {
+    connection.on('populateFields', function(options) {
 	    //mongodb://softlife:hackathon@oceanic.mongohq.com:10019/softlife
-	    $.ajax({
-		    url:"https://api.mongohq.com/databases/thejoy/collections/acivities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
-		    dataType:"json",
-		    type:"GET",
-		    success: function(data){
-				console.log(JSON.stringify(data));
-			    var row="";
-			    for(var i=0;i<data.length;i++) {
-				    row += "<tr><td>" +data[i].tweetContent + "<td></tr>";
-			    }
+//	    $.ajax({
+//		    url:"https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4&limit=100",
+//		    dataType:"json",
+//		    type:"GET",
+//		    success: function(data){
+//				console.log(JSON.stringify(data));
+//			    var row="";
+//			    for(var i=0;i<data.length;i++) {
+//				    row += '<tr><td>' +data[i].tweetContent + '</td><td><button class="close" data-id="'+data[i]._id.$oid+'">&times;</button></td></tr>';
+//			    }
+//
+//			    var table = '<table class="table table-bordered table-striped" style="width:494px;"><thead><tr><th>Tweet Content</th><th>Delete</th></tr></thead><tbody>'+ row +'</tbody></table>';
+//			    $('#dvTweets').html(table);
+//		    },
+//		    error: function(){
+//
+//		    }
+//	    });
 
-			    var table = "<table>"+ row +"</table>";
-			    $('#dvTweets').html(table);
-
-		    },
-		    error: function(){
-
-		    }
-	    });
+	    $('#txtTweet').val(options.tweetContent);
 
 //	    payload.flowDisplayName = "Send Tweet";
 //	    payload.tweetContent = "Congratulation you won a personal JetPack"
