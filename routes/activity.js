@@ -1,13 +1,13 @@
 'use strict';
 
-//var mongodb = require('mongodb');
-//var	MongoClient = mongodb.MongoClient;
-//
-//var activities, mongoose, _;
-//mongoose = require("mongoose");
-//
-//
-//var MONGOHQ_URL="mongodb://softlife:hackathon>@paulo.mongohq.com:10060/thejoy";
+var mongodb = require('mongodb');
+var	MongoClient = mongodb.MongoClient;
+
+var activities, mongoose, _;
+mongoose = require("mongoose");
+
+
+var MONGOHQ_URL="mongodb://softlife:hackathon>@paulo.mongohq.com:10060/thejoy";
 
 // NOTE: Each route can render a server-side view
 // Deps
@@ -38,7 +38,6 @@ exports.save = function( req, res ) {
  * POST Handler for /execute/ route of Activity.
  */
 exports.execute = function( req, response ) {
-    console.log('stringifyBody: ' + JSON.stringify(req.body));
 
 
 
@@ -63,14 +62,20 @@ exports.execute = function( req, response ) {
 
 
 
-//	mongoose.connect(process.env.MONGOHQ_URL);
-//
-//
-//	activities = mongoose.model('activities', { options: { tweetContent: "string" }, flowDisplayName: "string", tweetContent: "string" });
-//
-//	activities.find({}, function(err, documents) {
-//		return console.log(documents[0]);
-//	});
+	mongoose.connect(process.env.MONGOHQ_URL);
+
+
+	activities = mongoose.model('activities', { options: { tweetContent: "string" }, flowDisplayName: "string", tweetContent: "string" });
+
+	activities.find({}, function(err, documents) {
+		return console.log(documents[0]);
+	});
+
+
+
+
+	console.log(req);
+    console.log('stringifyBody: ' + JSON.stringify(req.body));
 
 	if (!req.body.tweet) {
 		response.send(400, 'The tweet param is required.');
