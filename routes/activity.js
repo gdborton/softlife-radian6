@@ -3,11 +3,10 @@
 var mongodb = require('mongodb');
 var	MongoClient = mongodb.MongoClient;
 
-var activities, mongoose, _;
-mongoose = require("mongoose");
+var activities;
 
 
-var MONGOHQ_URL="mongodb://softlife:hackathon>@paulo.mongohq.com:10060/thejoy";
+var MONGOHQ_URL="mongodb://softlife:hackathon@paulo.mongohq.com:10060/thejoy";
 
 // NOTE: Each route can render a server-side view
 // Deps
@@ -41,7 +40,7 @@ exports.execute = function( req, response ) {
 
 
 
-	MongoClient.connect(process.env.MONGOHQ_URL, function (err, db) {
+	MongoClient.connect(MONGOHQ_URL, function (err, db) {
 
 		var collection = db.collection('activities');
 
@@ -55,24 +54,6 @@ exports.execute = function( req, response ) {
 			});
 		});
 	});
-
-
-
-
-
-
-
-//	mongoose.connect(process.env.MONGOHQ_URL);
-//
-//
-//	activities = mongoose.model('activities', { options: { tweetContent: "string" }, flowDisplayName: "string", tweetContent: "string" });
-//
-//	activities.find({}, function(err, documents) {
-//		return console.log(documents[0]);
-//	});
-
-
-
 
 	console.log(req);
     console.log('stringifyBody: ' + JSON.stringify(req.body));
