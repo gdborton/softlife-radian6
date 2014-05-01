@@ -53,7 +53,7 @@ define( function( require ) {
 		    dataType:"json",
 		    data: {"document":payload},
 		    success: function(d){
-				console.log('success');
+				console.log('success '+ d);
 		    },
 		    error: function(){
 			    console.log('error');
