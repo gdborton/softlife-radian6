@@ -73,7 +73,8 @@ exports.execute = function( req, response ) {
                     }
                 };
 
-                req.pipe(request.post(requestOptions)).pipe(response);
+                request.post(requestOptions);
+                response.send( 200, 'Execute' );
             });
 		});
 	});
