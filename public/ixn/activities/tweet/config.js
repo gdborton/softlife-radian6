@@ -16,13 +16,14 @@ define([], function(){
        "execute": {
             "uri": "https://softlife.herokuapp.com/ixn/activities/tweet/execute/",
 			"inArguments": [
-                { Name: "%%twitterHandle%%" },
-                { Name: '{{twitterHandle}}'},
-                { name: '%twitterHandle%' }
+                { Name: "%%twitterHandle%%", "DefaultValue": "1" },
+                { Name: '{{twitterHandle}}', "DefaultValue": "1"},
+                { name: '%twitterHandle%', "DefaultValue": "1" },
+                { twitterHandle: "" }
             ],
 			"outArguments": [],
             "verb": "POST",
-			"body": "{ \"subject\":\"%%twitterHandle%%'s Password Reset Request\" }",
+			"body": "{ \"subject\":\"%%twitterHandle%%'s Password Reset %%twitterHandle%%  %twitterHandle% Request\" }",
             "format": "json",
             "useJwt": false,
             "timeout": 3000
