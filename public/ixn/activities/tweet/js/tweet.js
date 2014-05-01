@@ -69,12 +69,18 @@ define( function( require ) {
     connection.on('populateFields', function(payload) {
 	    //mongodb://softlife:hackathon@oceanic.mongohq.com:10019/softlife
 	    $.ajax({
-		    url:"",
-		    method:"GET",
+		    url:"https://api.mongohq.com/databases/thejoy/collections/acivities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
+		    type:"GET",
 		    success: function(data){
-			    payload.flowDisplayName = data.flowDisplayName;
-			    payload.tweetContent = data.tweetContent;
-			    $('#txtTweet').val(payload.tweetContent);
+
+			    var row="";
+			    for(var i=0;i<data.length;i++) {
+				    row += "<tr><td>" +data[i].tweetContent + "<td></tr>";
+			    }
+
+			    var table = "<table>"+ row +"<table>";
+			    $('#dvTweets').html(table);
+
 		    },
 		    error: function(){
 
