@@ -51,7 +51,7 @@ exports.execute = function( req, response ) {
 				return console.error(err)
 			}
 
-            var selectedIndex = Math.round(Math.random() * (docs.length - 0));
+            var selectedIndex = Math.floor(Math.random() * docs.length);
             var tweet = docs[selectedIndex].tweetContent;
 
 
