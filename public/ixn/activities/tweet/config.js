@@ -15,17 +15,10 @@ define([], function(){
         "apiVersion": "1.0",
        "execute": {
             "uri": "https://softlife.herokuapp.com/ixn/activities/tweet/execute/",
-			"inArguments": [
-                { "Name": "twitterHandle", "DefaultValue": "1", Value: ""},
-                { "Name": "twitterHandle", "DefaultValue": "1"},
-                { "Name": "%%twitterHandle%%", "DefaultValue": "1", Value: ""},
-                { "Name": "%%twitterHandle%%", "DefaultValue": "1"},
-                { "Name": "jbdbc", "DefaultValue": "1", Value: ""},
-                { "Name": "%%jbdbc%%", "DefaultValue": "1"}
-            ],
+			"inArguments": [],
 			"outArguments": [],
             "verb": "POST",
-			"body": "{ \"subject\":\"%%twitterHandle%%'s Password Reset %%twitterHandle%% %%jbdbc%% %twitterHandle% Request\" }",
+			"body": "",
             "format": "json",
             "useJwt": false,
             "timeout": 3000
