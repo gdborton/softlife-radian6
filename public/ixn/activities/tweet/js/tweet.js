@@ -87,6 +87,7 @@ define( function( require ) {
 			    var table = '<table class="table table-bordered table-striped" style="width:494px;"><thead><tr><th>Tweet Content</th><th>Delete</th></tr></thead><tbody>'+ row +'</tbody></table>';
 			    $('#dvTweets').html(table);
 				$('.close').on('click', function(e){
+					var self = $(this);
 					e.preventDefault();
 				    var id = $(this).data('id');
 					$.ajax({
@@ -95,7 +96,7 @@ define( function( require ) {
 						dataType:"json",
 						success: function(){
 						console.log('delete success');
-							$(this).parent().parent().remove();
+							self.parent().parent().remove();
 						},
 						error: function(){
 
