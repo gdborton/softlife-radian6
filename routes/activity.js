@@ -56,7 +56,7 @@ exports.execute = function( req, response ) {
 
 
             retrieveDEData(primaryEmailAddress, function (twitterHandle) {
-                tweet = tweet.replace(/{{twitterHandle}}/g, twitterHandle);
+                tweet = tweet.replace(/{{twitterHandle}}/g, '@' + twitterHandle);
 
                 var radian6Host = 'https://api.radian6.com';
                 var path = '/socialcloud/v1/twitter/status?async=true';
