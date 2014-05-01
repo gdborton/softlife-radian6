@@ -87,8 +87,8 @@ exports.retrieveDEData = function(req,res) {
 		},
 		json: true,
 		body: {
-			clientId: 'ktews83vzz87ywygk6c3jgq3',//process.env.CLIENT_ID,
-			clientSecret: '7aCXXU94cP6DM94RCUyD5587'//process.env.CLIENT_SECRET
+			clientId: process.env.CLIENT_ID,
+			clientSecret: process.env.CLIENT_SECRET
 		}
 	};
 
