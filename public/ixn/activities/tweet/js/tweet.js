@@ -86,7 +86,8 @@ define( function( require ) {
 
 			    var table = '<table class="table table-bordered table-striped" style="width:494px;"><thead><tr><th>Tweet Content</th><th>Delete</th></tr></thead><tbody>'+ row +'</tbody></table>';
 			    $('#dvTweets').html(table);
-				$('#close').on('click', function(){
+				$('#close').on('click', function(e){
+					e.preventDefault();
 				    var id = $(this).data('id');
 					$.ajax({
 						url:'https://api.mongohq.com/databases/thejoy/collections/activities/documents/'+id+'?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4',
