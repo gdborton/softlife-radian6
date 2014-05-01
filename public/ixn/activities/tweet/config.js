@@ -18,11 +18,12 @@ define([], function(){
 			"inArguments": [
                 { ArgumentName: "twitterHandle", "DefaultValue": "1 twitterHandle %%twitterHandle%% %twitterHandle%"},
                 { ArgumentName: '%twitterHandle%', "DefaultValue": "2 twitterHandle %twitterHandle% %%twitterHandle%%" },
-                { ArgumentName: '%%twitterHandle%%', "DefaultValue": "3 twitterHandle %twitterHandle% %%twitterHandle%%" }
+                { ArgumentName: '%%twitterHandle%%', "DefaultValue": "3 twitterHandle %twitterHandle% %%twitterHandle%%" },
+                { ArgumentName: '%%jbdbc%%', "DefaultValue": "4 jbdbc %jbdbc% %%jbdbc%%" }
             ],
 			"outArguments": [],
             "verb": "POST",
-			"body": "{ \"subject\":\"%%twitterHandle%%'s Password Reset %%twitterHandle%%  %twitterHandle% Request\" }",
+			"body": "{ \"subject\":\"%%twitterHandle%%'s Password Reset %%twitterHandle%% %%jbdbc%% %twitterHandle% Request\" }",
             "format": "json",
             "useJwt": false,
             "timeout": 3000
