@@ -194,7 +194,8 @@ app.post('/fireEvent/:type', function( req, res ) {
     } else if (data.twitterHandle){
         // Get follower count and add that to our data
 		getTwitterFollowerCount({twitterHandle: data.twitterHandle}, function(error, twitterUserData) {
-
+		console.log("Errorlog: " + error);
+			console.log("twitterUserData log: " + JSON.stringify(twitterUserData));
 			if (!error && twitterUserData && twitterUserData.jobDetails && twitterUserData.jobDetails.lastResponse && twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers) {
 				data.twitterFollowers = twitterUserData.jobDetails.lastResponse['twitter-user']['$'].followers;
 
@@ -217,7 +218,7 @@ app.post('/fireEvent/:type', function( req, res ) {
 					}
 				}.bind( this ));
 			} else {
-				res.send( 400, error );
+				res.send( 400, 'This is the real error' );
 			}
 		});
 
