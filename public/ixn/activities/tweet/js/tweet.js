@@ -69,7 +69,7 @@ define( function( require ) {
     connection.on('populateFields', function(payload) {
 	    //mongodb://softlife:hackathon@oceanic.mongohq.com:10019/softlife
 	    $.ajax({
-		    url:"https://api.mongohq.com/databases/thejoy/collections/acivities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4",
+		    url:"https://api.mongohq.com/databases/thejoy/collections/activities/documents?_apikey=RHOyGeUiMIxBxMXSOtfyJ6FKaUQD9wfVmYFCJ3ehi4&limit=100",
 		    dataType:"json",
 		    type:"GET",
 		    success: function(data){
